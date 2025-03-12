@@ -59,7 +59,44 @@ $(document).ready(function () {
   });
 
   // Header carousel
-  $(".header-carousel").owlCarousel({
+
+  function initializeOwlCarousel() {
+    let $carousel = $(".header-carousel");
+
+    if ($carousel.hasClass("owl-loaded")) {
+      $carousel.trigger("destroy.owl.carousel");
+      $carousel.removeClass("owl-loaded");
+      $carousel.find(".owl-stage-outer").children().unwrap();
+    }
+
+    $carousel.owlCarousel({
+      autoplay: true,
+      smartSpeed: 1500,
+      items: 1,
+      dots: true,
+      loop: true,
+      nav: true,
+      navText: [
+        '<i class="bi bi-chevron-left"></i>',
+        '<i class="bi bi-chevron-right"></i>',
+      ],
+    });
+  }
+
+  if ($(".header-carousel").length) {
+    initializeOwlCarousel();
+  }
+
+  setInterval(function () {
+    if (
+      $(".header-carousel").length &&
+      !$(".header-carousel").hasClass("owl-loaded")
+    ) {
+      initializeOwlCarousel();
+    }
+  }, 500);
+
+  /*$(".header-carousel").owlCarousel({
     autoplay: true,
     smartSpeed: 1500,
     items: 1,
@@ -70,7 +107,7 @@ $(document).ready(function () {
       '<i class="bi bi-chevron-left"></i>',
       '<i class="bi bi-chevron-right"></i>',
     ],
-  });
+  });*/
 
   // Testimonials carousel
   $(".testimonial-carousel").owlCarousel({
