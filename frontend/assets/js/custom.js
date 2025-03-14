@@ -7,6 +7,9 @@ $(document).ready(function () {
   app.route({
     view: "home",
     load: "home.html",
+    onReady: function () {
+      initOwlCarousel();
+    },
   });
   app.route({
     view: "properties",
@@ -53,9 +56,11 @@ $(document).ready(function () {
       $(".back-to-top").fadeOut("slow");
     }
   });
-  $(".back-to-top").click(function () {
-    $("html, body").animate({ scrollTop: 0 }, 1500, "easeInOutExpo");
-    return false;
+
+  $(document).on("click", ".back-to-top", function (event) {
+    event.preventDefault();
+
+    $("html, body").animate({ scrollTop: 0 }, 500, "easeInOutExpo");
   });
 
   // Header carousel
@@ -110,24 +115,26 @@ $(document).ready(function () {
   });*/
 
   // Testimonials carousel
-  $(".testimonial-carousel").owlCarousel({
-    autoplay: true,
-    smartSpeed: 1000,
-    margin: 24,
-    dots: false,
-    loop: true,
-    nav: true,
-    navText: [
-      '<i class="bi bi-arrow-left"></i>',
-      '<i class="bi bi-arrow-right"></i>',
-    ],
-    responsive: {
-      0: {
-        items: 1,
+  function initOwlCarousel() {
+    $(".testimonial-carousel").owlCarousel({
+      autoplay: true,
+      smartSpeed: 1000,
+      margin: 24,
+      dots: false,
+      loop: true,
+      nav: true,
+      navText: [
+        '<i class="bi bi-arrow-left"></i>',
+        '<i class="bi bi-arrow-right"></i>',
+      ],
+      responsive: {
+        0: {
+          items: 1,
+        },
+        992: {
+          items: 2,
+        },
       },
-      992: {
-        items: 2,
-      },
-    },
-  });
+    });
+  }
 });
