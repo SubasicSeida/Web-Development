@@ -48,6 +48,13 @@ $(document).ready(function () {
     }
   });
 
+  // Navbar toggler
+  $(".navbar-nav .nav-link").on("click", function () {
+    if ($("#navbarCollapse").hasClass("show")) {
+      $("#navbarToggler").click();
+    }
+  });
+
   // Back to top button
   $(window).scroll(function () {
     if ($(this).scrollTop() > 300) {
