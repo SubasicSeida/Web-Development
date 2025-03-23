@@ -1,48 +1,61 @@
 <div class="container-fluid header bg-white p-0">
   <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
-    <div class="container my-5" style="margin-top: 9rem !important">
-      <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8 col-sm-12">
-          <div class="bg-white p-5 shadow rounded">
-            <h2 class="text-primary mb-4">Sign Up</h2>
+    <div class="container my-5" style="margin-top: 10rem !important">
+      <div class="container my-5">
+        <h2>Create a New Listing</h2>
+        <div class="row">
 
+          <div class="col-md-6">
             <form>
               <div class="mb-3">
-                <label for="name" class="form-label">Full Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter your full name" />
+                <label for="listingTitle" class="form-label">Title</label>
+                <input type="text" class="form-control" id="listingTitle" required>
               </div>
 
               <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter your email" />
+                <label for="propertyType" class="form-label">Property Type</label>
+                <select class="form-select" id="propertyType" required>
+                  <option value="">Select Property Type</option>
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="condo">Condo</option>
+                  <option value="villa">Villa</option>
+                  <option value="land">Land</option>
+                </select>
               </div>
 
               <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" placeholder="Enter your phone number" />
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" required>
               </div>
 
-              <div class="mb-4">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter your password" />
+              <div class="mb-3">
+                <label for="listingPrice" class="form-label">Price</label>
+                <input type="number" class="form-control" id="listingPrice" required>
               </div>
 
-              <div class="d-grid">
-                <a href="#account" class="btn btn-primary px-3 ms-lg-3">Sign Up</a>
+              <div class="mb-3">
+                <label for="listingDescription" class="form-label">Description</label>
+                <textarea class="form-control" id="listingDescription" rows="3" required></textarea>
               </div>
 
-              <div class="text-center mt-3">
-                <p class="mb-0">
-                  Already have an account?
-                  <a href="#login" class="text-primary">Log In</a>
-                </p>
-              </div>
+              <button type="submit" class="btn btn-primary">Post Listing</button>
             </form>
+          </div>
+
+          <div class="col-md-6">
+            <div class="image-upload">
+              <h5>Upload Property Images</h5>
+              <p class="text-muted">Click to upload images</p>
+              <input type="file" id="imageUpload" multiple style="display: none;">
+              <label for="imageUpload" class="btn btn-secondary">Choose Files</label>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- Footer Start -->

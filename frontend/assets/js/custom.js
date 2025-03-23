@@ -20,8 +20,24 @@ $(document).ready(function () {
     load: "agents.html",
   });
   app.route({
+    view: "signup",
+    load: "signup.html",
+  });
+  app.route({
+    view: "login",
+    load: "login.html",
+  });
+  app.route({
     view: "account",
     load: "account.html",
+  });
+  app.route({
+    view: "create-listing",
+    load: "create-listing.html",
+  });
+  app.route({
+    view: "view-listing",
+    load: "view-listing.html",
   });
 
   app.run();
@@ -49,7 +65,7 @@ $(document).ready(function () {
   });
 
   // Navbar toggler
-  $(".navbar-nav .nav-link").on("click", function () {
+  $(".navbar-nav .nav-link, .navbar-collapse .btn").on("click", function () {
     if ($("#navbarCollapse").hasClass("show")) {
       $("#navbarToggler").click();
     }
@@ -145,3 +161,8 @@ $(document).ready(function () {
     });
   }
 });
+
+// Property Image Modal
+function openGalleryModal(imageSrc) {
+  document.getElementById("modalImage").src = imageSrc;
+}
