@@ -1,0 +1,208 @@
+<div class="container-fluid header bg-white p-0">
+  <div class="row g-0 align-items-center flex-column-reverse flex-md-row px-5">
+    <div class="container my-5" style="margin-top: 10rem !important">
+      <div class="row px-5">
+        <h2 class="mb-4">Golden Urban House For Sell</h2>
+        <div class="col-md-6">
+          <div class="row">
+
+            <div class="col-md-6 mb-4">
+              <img src="assets/img/property-1.jpg" alt="Property Image 1" class="img-fluid rounded gallery-image"
+                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-1.jpg')" />
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <img src="assets/img/property-2.jpg" alt="Property Image 2" class="img-fluid rounded gallery-image"
+                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-2.jpg')" />
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <img src="assets/img/property-3.jpg" alt="Property Image 3" class="img-fluid rounded gallery-image"
+                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-3.jpg')" />
+            </div>
+
+            <div class="col-md-6 mb-4">
+              <img src="assets/img/property-2.jpg" alt="Property Image 4" class="img-fluid rounded gallery-image"
+                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-2.jpg')" />
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <h3 class="text-primary mb-4">$12,345</h3>
+          <p>
+            <i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street,
+            New York, USA
+          </p>
+          <p><i class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</p>
+          <p><i class="fa fa-bed text-primary me-2"></i>3 Bed</p>
+          <p><i class="fa fa-bath text-primary me-2"></i>2 Bath</p>
+          <p><strong>Property Type:</strong> House</p>
+          <p><strong>Description:</strong></p>
+          <p>
+            This stunning urban house is located in the heart of New York City.
+            It features 3 spacious bedrooms, 2 modern bathrooms, and a large
+            living area. The property is perfect for families or professionals
+            looking for a comfortable and stylish home. The house is equipped
+            with state-of-the-art appliances and offers breathtaking views of
+            the city skyline.
+          </p>
+          <p><strong>Additional Features:</strong></p>
+          <ul>
+            <li>Open-concept living and dining area</li>
+            <li>Modern kitchen with granite countertops</li>
+            <li>Private backyard with a patio</li>
+            <li>Secure parking space</li>
+            <li>Close to schools, parks, and shopping centers</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="row mt-5">
+      <div class="col px-3">
+        <h3>Reviews</h3>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">John Doe</h5>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p class="card-text">Great property with a beautiful view! The location is perfect, and the house is very
+              spacious.</p>
+            <small class="text-muted">Posted on October 1, 2023</small>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Jane Smith</h5>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="card-text">Absolutely loved this house! The modern design and amenities are top-notch. Highly
+              recommend!</p>
+            <small class="text-muted">Posted on September 25, 2023</small>
+          </div>
+        </div>
+
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Michael Brown</h5>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+            <p class="card-text">Nice property, but the neighborhood is a bit noisy. Otherwise, it's a great deal for
+              the price.</p>
+            <small class="text-muted">Posted on September 15, 2023</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Form -->
+  <div class="row mt-5 py-5">
+    <div class="col" style="padding-left: 7rem !important; padding-right: 7rem !important;">
+      <h4>Leave a Review</h4>
+      <form id="reviewForm">
+        <div class="mb-3">
+          <h5>Rating : </h5>
+          <i class="far fa-star text-warning ms-2"></i>
+          <i class="far fa-star text-warning ms-2"></i>
+          <i class="far fa-star text-warning ms-2"></i>
+          <i class="far fa-star text-warning ms-2"></i>
+          <i class="far fa-star text-warning ms-2"></i>
+        </div>
+        <div class="mb-3">
+          <label for="comment" class="form-label">Comment</label>
+          <textarea class="form-control" id="comment" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Gallery Modal -->
+  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="galleryModalLabel">Property Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="modalImage" src="" alt="Property Image" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container py-5">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <section id="contact">
+          <h5 class="text-white mb-4">Get In Touch</h5>
+          <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+          <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+          <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+          <div class="d-flex pt-2">
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </section>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5 class="text-white mb-4">Quick Links</h5>
+        <a class="btn btn-link text-white-50" href="">About Us</a>
+        <a class="btn btn-link text-white-50" href="">Contact Us</a>
+        <a class="btn btn-link text-white-50" href="">Our Services</a>
+        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <h5 class="text-white mb-4">Newsletter</h5>
+        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+        <div class="position-relative mx-auto" style="max-width: 400px;">
+          <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+          <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="copyright">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          &copy; <a class="border-bottom" href="#">HomeFind</a>, All Right Reserved.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer End -->
