@@ -6,12 +6,12 @@ class ReviewDao extends BaseDao {
         parent::__construct($table);
     }
 
-    public function getByUserId($userId) {
+    /* public function getByUserId($userId) {
         $stmt = $this->connection->prepare("SELECT * FROM reviews WHERE user_id = :userId");
         $stmt->bindParam(":userId", $userId);
         $stmt->execute();
         return $stmt->fetchAll();
-    }
+    } */
 
     public function getByPropertyId($propertyId) {
         $stmt = $this->connection->prepare("SELECT * FROM reviews WHERE property_id = :propertyId");

@@ -310,6 +310,34 @@
   color: var(--secondary) !important;
 }
 
+/* Pagination Styles */
+.pagination {
+    margin-top: 30px;
+}
+
+.page-item .page-link {
+    color: var(--dark);
+    border: 1px solid #dee2e6;
+    margin: 0 5px;
+    border-radius: 50px !important;
+}
+
+.page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.page-item:not(.active):not(.disabled) .page-link:hover {
+    background-color: #f8f9fa;
+    color: var(--primary);
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+}
+
 /*** Testimonial ***/
 .testimonial-carousel {
   padding-left: 1.5rem;
@@ -434,4 +462,24 @@
 
 .modal-dialog {
   margin-top: 10rem !important;
+}
+
+
+/*** Sort ***/
+.dropdown-menu {
+    min-width: 220px;
+}
+
+.sort-option.active {
+    background-color: rgba(0, 185, 142, 0.1);
+    color: var(--primary);
+}
+
+.sort-option.active:hover {
+    background-color: rgba(0, 185, 142, 0.1);
+}
+
+.btn-outline-primary.dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
 }

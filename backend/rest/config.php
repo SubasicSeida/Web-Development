@@ -12,7 +12,7 @@ class Database {
             try {
                 self::$connection = new PDO(
                     "mysql:host=" . self::$host . ";dbname=" . self::$dbName,
-                    self::$name,
+                    self::$name, 
                     self::$password,
                     [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

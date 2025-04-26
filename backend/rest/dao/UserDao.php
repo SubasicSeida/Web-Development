@@ -29,6 +29,26 @@ class UserDao extends BaseDao {
         $stmt->bindParam(':userId', $userId);
         return $stmt->execute();
     }
+
+    public function createUser($userData) {
+        $stmt = $this->connection->prepare("INSERT INTO users 
+                                          (first_name, last_name, email, password_hash, phone_number, user_role,
+                                          profile_picture, created_at) 
+                                          VALUES (:first_name, :last_name, :email, :password_hash, :phone_number, :user_role,
+                                          :profile_picture, NOW()");
+        
+        $stmt->bindParam(':first_name', $userData['first_name']);
+        $stmt->bindParam(':last_name', $userData['last_name']);
+        $stmt->bindParam(':email', $userData['email']);
+        $stmt->bindParam(':password_hash', $userData['password_hash']);
+        $stmt->bindParam(':phone_number', $userData['phone_number']);
+        $stmt->bindParam(':user_role', $userData['user_role']);
+        $stmt->bindParam(':profile_picture', $userData['profile_picture']);
+        
+        $stmt->execute();
+        
+        return $this->connection->lastInsertId();
+    }
 }
 
 ?>

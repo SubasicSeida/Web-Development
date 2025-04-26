@@ -160,9 +160,17 @@ $(document).ready(function () {
       },
     });
   }
-});
+
 
 // Property Image Modal
 function openGalleryModal(imageSrc) {
   document.getElementById("modalImage").src = imageSrc;
 }
+
+/*** Sorting ***/
+
+
+/***Pagination ***/
+
+
+});
