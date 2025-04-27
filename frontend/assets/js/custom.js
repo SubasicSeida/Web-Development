@@ -38,9 +38,13 @@ $(document).ready(function () {
   app.route({
     view: "view-listing",
     load: "view-listing.html",
+    onReady : function(){
+        initLightbox();
+    }
   });
 
   app.run();
+
 
   // Spinner
   var spinner = function () {
@@ -52,8 +56,10 @@ $(document).ready(function () {
   };
   spinner();
 
+
   // Initiate the wowjs
   new WOW().init();
+
 
   // Sticky Navbar
   $(window).scroll(function () {
@@ -64,12 +70,14 @@ $(document).ready(function () {
     }
   });
 
+
   // Navbar toggler
   $(".navbar-nav .nav-link, .navbar-collapse .btn").on("click", function () {
     if ($("#navbarCollapse").hasClass("show")) {
       $("#navbarToggler").click();
     }
   });
+
 
   // Back to top button
   $(window).scroll(function () {
@@ -86,8 +94,8 @@ $(document).ready(function () {
     $("html, body").animate({ scrollTop: 0 }, 500, "easeInOutExpo");
   });
 
-  // Header carousel
 
+  // Header carousel
   function initializeOwlCarousel() {
     let $carousel = $(".header-carousel");
 
@@ -124,18 +132,6 @@ $(document).ready(function () {
     }
   }, 500);
 
-  /*$(".header-carousel").owlCarousel({
-    autoplay: true,
-    smartSpeed: 1500,
-    items: 1,
-    dots: true,
-    loop: true,
-    nav: true,
-    navText: [
-      '<i class="bi bi-chevron-left"></i>',
-      '<i class="bi bi-chevron-right"></i>',
-    ],
-  });*/
 
   // Testimonials carousel
   function initOwlCarousel() {
@@ -162,15 +158,89 @@ $(document).ready(function () {
   }
 
 
-// Property Image Modal
-function openGalleryModal(imageSrc) {
-  document.getElementById("modalImage").src = imageSrc;
-}
+  /*** Star toggle ***/
+  $(document).on('click', '.star-toggle', function () {
+    var icon = $(this).find('i');
+    icon.toggleClass('far').toggleClass('fas');
+  });
 
-/*** Sorting ***/
+
+  /*** Profile picture preview ***/
+  $(document).on('change', '#editProfilePicture', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+        const imageURL = URL.createObjectURL(file);
+        $('#profilePreview').attr('src', imageURL);
+    }
+  });
 
 
-/***Pagination ***/
+    /*** Property Image Lightbox ***/
+    let galleryImages = [];
+    let currentIndex = 0;
+
+    function updateModalImage() {
+        $('#modalImage').attr('src', galleryImages[currentIndex]);
+    }
+
+    function initLightbox() {
+        galleryImages = [];
+        $('.gallery-image').each(function () {
+            galleryImages.push($(this).attr('src'));
+        });
+
+        $('.gallery-image').off('click').on('click', function () {
+            currentIndex = $('.gallery-image').index(this);
+            updateModalImage();
+        });
+
+        $('#prevImage').off('click').on('click', function () {
+            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateModalImage();
+        });
+
+        $('#nextImage').off('click').on('click', function () {
+            currentIndex = (currentIndex + 1) % galleryImages.length;
+            updateModalImage();
+        });
+    }
+
+
+    /*** Star rating ***/
+    let selectedRating = 0;
+
+    function highlightStars(rating) {
+        $('.star-rating').each(function () {
+            const starValue = $(this).data('value');
+            if (starValue <= rating) {
+                $(this).removeClass('far').addClass('fas');
+            } else {
+                $(this).removeClass('fas').addClass('far');
+            }
+        });
+    }
+
+    $(document).on('mouseenter', '.star-rating', function () {
+        const hoverValue = $(this).data('value');
+        highlightStars(hoverValue);
+    });
+
+    $(document).on('mouseleave', '.star-rating', function () {
+        highlightStars(selectedRating);
+    });
+
+    $(document).on('click', '.star-rating', function () {
+        if(selectedRating === $(this).data('value')){
+            selectedRating = 0;
+        } else selectedRating = $(this).data('value');
+        highlightStars(selectedRating);
+    });
+    
+
+    /*** Sorting ***/
+
+
+    /***Pagination ***/
 
 
 });
