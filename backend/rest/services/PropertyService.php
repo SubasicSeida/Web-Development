@@ -9,8 +9,8 @@ class PropertyService extends BaseService {
         parent::__construct($dao);
     }
 
-    public function getByAgentId($id) {
-        return $this->dao->getByAgentId($id);
+    public function getByAgentId($id, $page = 1) {
+        return $this->dao->getByAgentId($id, $page);
     }
 
     public function searchProperties($filters = []) {
@@ -20,14 +20,12 @@ class PropertyService extends BaseService {
             }
         }
 
-        /*
-        if (isset($filters['keyword'])) {
-            $filters['title'] = $filters['keyword'];
-            unset($filters['keyword']);
+        try {
+            return $this->dao->search($filters);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            throw new Exception("Failed to search properties.");
         }
-        */
-
-        return $this->dao->search($filters);
     }
 }
 

@@ -10,7 +10,17 @@ class PropertyImagesService extends BaseService {
     }
 
     public function getByPropertyId($id) {
-        return $this->dao->getByPropertyId($id);
+        $images = $this->dao->getByPropertyId($id);
+
+        if(!empty($images)){
+            return $images;
+        } else {
+            return [[
+                'id' => 0,
+                'property_id' => $id,
+                'image_url' => 'default.jpg'
+            ]];
+        }
     }
 }
 

@@ -6,68 +6,95 @@ class PropertyDao extends BaseDao {
         parent::__construct($table);
     }
 
-    public function getByAgentId($agentId) {
-        $stmt = $this->connection->prepare("SELECT * FROM  properties WHERE agent_id = :agentId");
-        $stmt->bindParam(':agentId', $agentId);
+    public function getByAgentId($agentId, $page = 1) {
+        $limit = 3;
+        $offset = ($page - 1) * $limit; 
+
+        $stmt = $this->connection->prepare("SELECT * FROM  properties WHERE agent_id = :agentId LIMIT :limit OFFSET :offset");
+        $stmt->bindParam(':agentId', $agentId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $agentProperties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $countStmt = $this->connection->prepare("SELECT COUNT(*) FROM properties WHERE agent_id = :agentId");
+        $countStmt->bindParam(':agentId', $agentId, PDO::PARAM_INT);
+        $countStmt->execute();
+        $total = $countStmt->fetchColumn();
+
+        return [
+            'data' => $agentProperties,
+            'pagination' => [
+                'total_items' => (int)$total,
+                'current_page' => $page,
+                'items_per_page' => $limit,
+                'total_pages' => ceil($total / $limit)
+            ]
+        ];
     }
 
     public function search($filters = []) {
-        $query = "SELECT SQL_CALC_FOUND_ROWS * FROM properties WHERE 1=1";
+        $baseQuery = "FROM properties WHERE 1=1";
         $params = [];
-        
+    
         if (!empty($filters['keyword'])) {
-            $query .= " AND (title LIKE :keyword OR description LIKE :keyword 
-            OR address LIKE :keyword OR city LIKE :keyword)";
+            $baseQuery .= " AND (title LIKE :keyword OR description LIKE :keyword 
+                                OR address LIKE :keyword OR city LIKE :keyword)";
             $params[':keyword'] = "%" . $filters['keyword'] . "%";
         }
-        
+    
         if (!empty($filters['propertyType'])) {
-            $query .= " AND property_type = :propertyType";
+            $baseQuery .= " AND property_type = :propertyType";
             $params[':propertyType'] = $filters['propertyType'];
         }
-        
+    
         if (!empty($filters['listingType'])) {
-            $query .= " AND listing_type = :listingType";
+            $baseQuery .= " AND listing_type = :listingType";
             $params[':listingType'] = $filters['listingType'];
         }
-        
-        
+    
         if (!empty($filters['minPrice'])) {
-            $query .= " AND price >= :minPrice";
+            $baseQuery .= " AND price >= :minPrice";
             $params[':minPrice'] = (float)$filters['minPrice'];
         }
+    
         if (!empty($filters['maxPrice'])) {
-            $query .= " AND price <= :maxPrice";
+            $baseQuery .= " AND price <= :maxPrice";
             $params[':maxPrice'] = (float)$filters['maxPrice'];
         }
     
-        
+        // count total items
+        $countQuery = "SELECT COUNT(*) " . $baseQuery;
+        $countStmt = $this->connection->prepare($countQuery);
+        foreach ($params as $key => $value) {
+            $countStmt->bindValue($key, $value);
+        }
+        $countStmt->execute();
+        $total = $countStmt->fetchColumn();
+    
+        // fetch paginated data
+        $dataQuery = "SELECT * " . $baseQuery;
+    
+        // sorting
         $validSortFields = ['price', 'created_at'];
         $sortField = in_array($filters['sort'] ?? null, $validSortFields) ? $filters['sort'] : 'created_at';
         $sortOrder = strtoupper($filters['order'] ?? '') === 'ASC' ? 'ASC' : 'DESC';
-        $query .= " ORDER BY {$sortField} {$sortOrder}";
+        $dataQuery .= " ORDER BY {$sortField} {$sortOrder}";
     
-        
-        $limit = isset($filters['limit']) ? (int)$filters['limit'] : 9;
+        // pagination
+        $limit = 9;
         $page = isset($filters['page']) ? max(1, (int)$filters['page']) : 1;
         $offset = ($page - 1) * $limit;
-        
-        $query .= " LIMIT :limit OFFSET :offset";
-        $params[':limit'] = $limit;
-        $params[':offset'] = $offset;
+        $dataQuery .= " LIMIT :limit OFFSET :offset";
     
-        
-        $stmt = $this->connection->prepare($query);
+        $dataStmt = $this->connection->prepare($dataQuery);
         foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
+            $dataStmt->bindValue($key, $value);
         }
-        $stmt->execute();
-        $properties = $stmt->fetchAll();
-    
-
-        $total = $this->connection->query("SELECT FOUND_ROWS()")->fetchColumn();
+        $dataStmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $dataStmt->execute();
+        $properties = $dataStmt->fetchAll();
     
         return [
             'data' => $properties,
@@ -78,7 +105,8 @@ class PropertyDao extends BaseDao {
                 'total_pages' => ceil($total / $limit)
             ]
         ];
-    }  
+    }
+     
     
 }
 

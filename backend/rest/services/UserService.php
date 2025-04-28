@@ -1,7 +1,7 @@
 <?php
 
-require_once 'dao/BaseDao.php';
-require_once 'dao/UserDao.php';
+require_once 'BaseService.php';
+require_once '../dao/UserDao.php';
 
 class UserService extends BaseService {
     public function __construct() {
@@ -14,7 +14,7 @@ class UserService extends BaseService {
     }
 
     public function getByRole($role) {
-        return $this->dao->getByRole($userRole);
+        return $this->dao->getByRole($role);
     }
 
     public function updatePassword($userId, $newPassHash) {
@@ -29,38 +29,48 @@ class UserService extends BaseService {
         return $this->dao->updatePassword($userId, $newPasswordHash);
     }
 
-    public function createUser($userData) {
-        $this->validateUserData($userData);
+    public function createCustomer($userData) {
+        $errors = $this->validateUserData($userData);
         
-        if ($this->dao->getByEmail($userData['email'])) {
-            throw new RuntimeException("Email already exists");
+        if (!empty($errors)) {
+            return ['success' => false, 'errors' => $errors];
         }
 
-        $hashedPassword = password_hash($userData['password'], PASSWORD_BCRYPT);
+        $customerId = $this->userDao->createCustomer($userData);
+        return ['success' => true, 'customerId' => $customerId];
+    }
+
+    public function createAgent($userData) {
+        $errors = $this->validateUserData($userData);
         
-        return $this->dao->insert([
-            'email' => $userData['email'],
-            'password_hash' => $hashedPassword,
-            'user_role' => $userData['role'] ?? 'customer',
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
+        if (!empty($errors)) {
+            return ['success' => false, 'errors' => $errors];
+        }
+
+        $agentId = $this->userDao->createCustomer($userData);
+        return ['success' => true, 'agentId' => $agentId];
     }
 
     private function validateUserData($userData) {
-        $required = ['email', 'password'];
-        foreach ($required as $field) {
-            if (empty($userData[$field])) {
-                throw new InvalidArgumentException("Missing required field: $field");
-            }
+        $errors = [];
+
+        if (empty($userData['first_name'])) {
+            $errors[] = 'First name is required.';
         }
 
-        if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException("Invalid email format");
+        if (empty($userData['email']) || !filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'A valid email is required.';
         }
 
-        if (strlen($userData['password']) < 8) {
-            throw new InvalidArgumentException("Password must be at least 8 characters");
+        if (empty($userData['password_hash'])) {
+            $errors[] = 'Password hash is required.';
         }
+
+        if (!empty($userData['phone_number']) && !preg_match('/^\+?[0-9]{7,15}$/', $userData['phone_number'])) {
+            $errors[] = 'Phone number must be between 7 and 15 digits, optionally starting with +.';
+        }
+
+        return $errors;
     }
 }
 

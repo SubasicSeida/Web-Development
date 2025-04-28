@@ -1,16 +1,12 @@
 <?php
 
 require_once 'PropertyService.php';
+require_once 'FavoritesService.php';
+require_once 'PropertyImagesService.php';
+require_once 'RentalService.php';
+require_once 'ReviewService.php';
+require_once 'UserService.php';
 
-/* $property_service = new PropertyService();
-$properties = $property_service->searchProperties([
-    'property_type' => 'apartment',
-    'city' => 'Sarajevo'
-]);
 
-print_r($properties);
-
-$agent_property = $property_service->getByAgentId(3);
-print_r($agent_property); */
 
 ?>

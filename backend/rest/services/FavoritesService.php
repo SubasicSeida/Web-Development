@@ -9,8 +9,12 @@ class FavoritesService extends BaseService {
         parent::__construct($dao);
     }
 
-    public function getByUserId($id) {
-        return $this->dao->getByUserId($id);
+    public function getFavoritesByUserId($id, $page = 1) {
+        return $this->dao->getFavoritesByUserId($id, $page);
+    }
+
+    public function isFavorited($userId, $propertyId) {
+        return $this->dao->isFavorited($userId, $propertyId);
     }
 }
 

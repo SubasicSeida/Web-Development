@@ -7,6 +7,10 @@ class BaseDao {
     protected $connection;
 
     public function __construct($table) {
+        $allowedTables = ['users', 'reviews', 'rentals', 'property_images', 'properties', 'favorites'];
+        if (!in_array($table, $allowedTables)) {
+            throw new Exception('Invalid table name');
+        }
         $this->table = $table;
         $this->connection = Database::connect();
     }
@@ -18,7 +22,7 @@ class BaseDao {
     }
 
     public function getById($id) {
-        $stmt = $this->connection->prepare("SELECT * FROM " . $this->table . " WHERE id = :id");
+        $stmt = $this->connection->prepare("SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetch();
@@ -29,7 +33,13 @@ class BaseDao {
         $placeholders = ":" . implode(", :", array_keys($data));
         $sql = "INSERT INTO " . $this->table . " ($columns) VALUES ($placeholders)";
         $stmt = $this->connection->prepare($sql);
-        return $stmt->execute($data);
+        
+        if ($stmt->execute($data)) {
+            return $this->connection->lastInsertId();
+        } else {
+            error_log(print_r($stmt->errorInfo(), true));
+            return false;
+        }
     }
 
     public function update($id, $data) {
@@ -41,13 +51,25 @@ class BaseDao {
         $sql = "UPDATE " . $this->table . " SET $fields WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
         $data['id'] = $id;
-        return $stmt->execute($data);
+
+        if ($stmt->execute($data)) {
+            return $stmt->rowCount();
+        } else {
+            error_log(print_r($stmt->errorInfo(), true));
+            return false;
+        }
     }
 
     public function delete($id) {
         $stmt = $this->connection->prepare("DELETE FROM " . $this->table . " WHERE id = :id");
         $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+        
+        if ($stmt->execute()) {
+            return $stmt->rowCount();
+        } else {
+            error_log(print_r($stmt->errorInfo(), true));
+            return false;
+        }
     }
 }
 
