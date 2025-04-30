@@ -1,5 +1,5 @@
 <?php
-require_once "BaseDao.php";
+require_once __DIR__ . "/BaseDao.php";
 
 class ReviewDao extends BaseDao {
     public function __construct($table = "reviews") {
@@ -14,11 +14,9 @@ class ReviewDao extends BaseDao {
             "SELECT * FROM reviews 
              WHERE property_id = :propertyId 
              ORDER BY rating DESC
-             LIMIT :limit OFFSET :offset"
+             LIMIT $limit OFFSET $offset"
         );
         $stmt->bindParam(':propertyId', $propertyId, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

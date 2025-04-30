@@ -4,7 +4,7 @@ class Database {
     private static $host = 'localhost';
     private static $dbName = 'home_find_real_estate';
     private static $name = 'root';
-    private static $password = '...';
+    private static $password = '';
     private static $connection = null;
 
     public static function connect() {

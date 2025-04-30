@@ -1,7 +1,7 @@
 <?php
 
-require_once 'BaseService.php';
-require_once '../dao/RentalDao.php';
+require_once __DIR__ . '/BaseService.php';
+require_once __DIR__ . '/../dao/RentalDao.php';
 
 class RentalService extends BaseService {
     public function __construct() {
@@ -10,13 +10,25 @@ class RentalService extends BaseService {
     }
 
     public function getUnavailableDates($property_id) {
+        if (!is_numeric($property_id) || $property_id <= 0) {
+            throw new Exception("Invalid property ID.");
+        }
+
         return $this->dao->getUnavailableDates($property_id);
     }
 
     public function createRental($rentalData) {
-        $startDate = $rentalData['start_date'];
-        $endDate = $rentalData['end_date'];
-        $propertyId = $rentalData['property_id'];
+        if (empty($rentalData['start_date']) || empty($rentalData['end_date']) || empty($rentalData['property_id'])) {
+            throw new Exception("Missing required rental fields.");
+        }
+
+        $startDate = trim($rentalData['start_date']);
+        $endDate = trim($rentalData['end_date']);
+        $propertyId = (int) $rentalData['property_id'];
+
+        if (!is_numeric($propertyId) || $propertyId <= 0) {
+            throw new Exception("Invalid property ID.");
+        }
 
         if (!$this->validateDate($startDate) || !$this->validateDate($endDate)) {
             throw new Exception("Invalid date format.");
@@ -39,6 +51,10 @@ class RentalService extends BaseService {
     }
 
     public function getByUserId($userId) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new Exception("Invalid user ID.");
+        }
+        
         return $this->dao->getByUserId($userId);
     }
 }

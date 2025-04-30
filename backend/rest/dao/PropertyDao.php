@@ -1,5 +1,5 @@
 <?php
-require_once "BaseDao.php";
+require_once __DIR__ . "/BaseDao.php";
 
 class PropertyDao extends BaseDao {
     public function __construct($table = "properties") {
@@ -10,10 +10,8 @@ class PropertyDao extends BaseDao {
         $limit = 3;
         $offset = ($page - 1) * $limit; 
 
-        $stmt = $this->connection->prepare("SELECT * FROM  properties WHERE agent_id = :agentId LIMIT :limit OFFSET :offset");
+        $stmt = $this->connection->prepare("SELECT * FROM  properties WHERE agent_id = :agentId LIMIT $limit OFFSET $offset");
         $stmt->bindParam(':agentId', $agentId, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         $agentProperties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -62,6 +60,26 @@ class PropertyDao extends BaseDao {
             $baseQuery .= " AND price <= :maxPrice";
             $params[':maxPrice'] = (float)$filters['maxPrice'];
         }
+
+        if (!empty($filters['minSize'])) {
+            $baseQuery .= " AND sqft >= :minSize";
+            $params[':minSize'] = (float)$filters['minSize'];
+        }
+    
+        if (!empty($filters['maxSize'])) {
+            $baseQuery .= " AND sqft <= :maxSize";
+            $params[':maxSize'] = (float)$filters['maxSize'];
+        }
+
+        if (!empty($filters['bedrooms'])) {
+            $baseQuery .= " AND bedrooms = :bedrooms";
+            $params[':bedrooms'] = (float)$filters['bedrooms'];
+        }
+
+        if (!empty($filters['bathrooms'])) {
+            $baseQuery .= " AND bathrooms = :bathrooms";
+            $params[':bathrooms'] = (float)$filters['bathrooms'];
+        }
     
         // count total items
         $countQuery = "SELECT COUNT(*) " . $baseQuery;
@@ -76,23 +94,20 @@ class PropertyDao extends BaseDao {
         $dataQuery = "SELECT * " . $baseQuery;
     
         // sorting
-        $validSortFields = ['price', 'created_at'];
-        $sortField = in_array($filters['sort'] ?? null, $validSortFields) ? $filters['sort'] : 'created_at';
-        $sortOrder = strtoupper($filters['order'] ?? '') === 'ASC' ? 'ASC' : 'DESC';
+        $sortField = $filters['sort'];
+        $sortOrder = $filters['order'];
         $dataQuery .= " ORDER BY {$sortField} {$sortOrder}";
     
         // pagination
         $limit = 9;
         $page = isset($filters['page']) ? max(1, (int)$filters['page']) : 1;
         $offset = ($page - 1) * $limit;
-        $dataQuery .= " LIMIT :limit OFFSET :offset";
+        $dataQuery .= " LIMIT $limit OFFSET $offset";
     
         $dataStmt = $this->connection->prepare($dataQuery);
         foreach ($params as $key => $value) {
             $dataStmt->bindValue($key, $value);
         }
-        $dataStmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $dataStmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $dataStmt->execute();
         $properties = $dataStmt->fetchAll();
     

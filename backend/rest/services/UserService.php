@@ -1,7 +1,7 @@
 <?php
 
-require_once 'BaseService.php';
-require_once '../dao/UserDao.php';
+require_once __DIR__ . '/BaseService.php';
+require_once __DIR__ . '/../dao/UserDao.php';
 
 class UserService extends BaseService {
     public function __construct() {
@@ -10,45 +10,57 @@ class UserService extends BaseService {
     }
 
     public function getByEmail($email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("Invalid email format.");
+        }
         return $this->dao->getByEmail($email);
     }
 
     public function getByRole($role) {
+        $allowedRoles = ['admin', 'agent', 'customer'];
+        if (!in_array($role, $allowedRoles, true)) {
+            throw new Exception("Invalid user role.");
+        }
         return $this->dao->getByRole($role);
     }
 
-    public function updatePassword($userId, $newPassHash) {
-        if (empty($userId) || !is_numeric($userId)) {
-            throw new InvalidArgumentException("Invalid user ID");
+    public function updatePassword($userId, $newPassword) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new Exception("Invalid user ID.");
         }
 
-        if (empty($newPasswordHash) || strlen($newPasswordHash) < 60) {
-            throw new InvalidArgumentException("Invalid password hash");
+        if (strlen($newPassword) < 8) {
+            throw new Exception("Password must be at least 8 characters long.");
         }
 
-        return $this->dao->updatePassword($userId, $newPasswordHash);
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        return $this->dao->updatePassword($userId, $hashed);
     }
 
     public function createCustomer($userData) {
         $errors = $this->validateUserData($userData);
         
         if (!empty($errors)) {
-            return ['success' => false, 'errors' => $errors];
+            return $errors;
         }
 
-        $customerId = $this->userDao->createCustomer($userData);
-        return ['success' => true, 'customerId' => $customerId];
+        $userData['password_hash'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        unset($userData['password']);
+
+        return $this->dao->createCustomer($userData);
     }
 
     public function createAgent($userData) {
         $errors = $this->validateUserData($userData);
         
         if (!empty($errors)) {
-            return ['success' => false, 'errors' => $errors];
+            return $errors;
         }
 
-        $agentId = $this->userDao->createCustomer($userData);
-        return ['success' => true, 'agentId' => $agentId];
+        $userData['password_hash'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        unset($userData['password']);
+
+        return $this->dao->createAgent($userData);
     }
 
     private function validateUserData($userData) {
@@ -62,8 +74,8 @@ class UserService extends BaseService {
             $errors[] = 'A valid email is required.';
         }
 
-        if (empty($userData['password_hash'])) {
-            $errors[] = 'Password hash is required.';
+        if (empty($userData['password']) || strlen($userData['password']) < 8) {
+            $errors[] = 'Password must be at least 8 characters long.';
         }
 
         if (!empty($userData['phone_number']) && !preg_match('/^\+?[0-9]{7,15}$/', $userData['phone_number'])) {
