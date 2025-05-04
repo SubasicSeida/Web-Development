@@ -26,6 +26,27 @@ class ReviewService extends BaseService {
 
         return $this->dao->getAverageRating((int)$propertyId);
     }
+
+    public function createReview($data) {
+        if (empty($data['user_id']) || !is_numeric($data['user_id'])) {
+            throw new Exception("Invalid or missing user ID.");
+        }
+    
+        if (empty($data['property_id']) || !is_numeric($data['property_id'])) {
+            throw new Exception("Invalid or missing property ID.");
+        }
+    
+        if (empty($data['rating']) || $data['rating'] < 1 || $data['rating'] > 5) {
+            throw new Exception("Rating must be between 1 and 5.");
+        }
+    
+        if (empty($data['comment'])) {
+            $data['comment'] = '';
+        }
+    
+        return $this->dao->createReview($data);
+    }
+    
 }
 
 ?>

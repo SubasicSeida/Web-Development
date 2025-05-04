@@ -48,6 +48,17 @@ class ReviewDao extends BaseDao {
 
         return $result ? (float)$result['avg_rating'] : null;
     }
+
+    public function createReview($data) {
+        $stmt = $this->connection->prepare("INSERT INTO reviews (user_id, property_id, rating, comment, created_at) VALUES (:user_id, :property_id, :rating, :comment, NOW())");
+        $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':property_id', $data['property_id'], PDO::PARAM_INT);
+        $stmt->bindParam(':comment', $data['comment']);
+        $stmt->bindParam(':rating', $data['rating']);
+
+        $stmt->execute();
+        return $this->connection->lastInsertId();
+    }
 }
 
 ?>
