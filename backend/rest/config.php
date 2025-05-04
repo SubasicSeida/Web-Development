@@ -4,7 +4,7 @@ class Database {
     private static $host = 'localhost';
     private static $dbName = 'home_find_real_estate';
     private static $name = 'root';
-    private static $password = '...';
+    private static $password = 'hFW5yLylRpx!=2)';
     private static $connection = null;
 
     public static function connect() {
@@ -12,7 +12,7 @@ class Database {
             try {
                 self::$connection = new PDO(
                     "mysql:host=" . self::$host . ";dbname=" . self::$dbName,
-                    self::$name,
+                    self::$name, 
                     self::$password,
                     [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
