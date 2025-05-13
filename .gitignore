@@ -1,1 +1,3 @@
 backend/vendor
+backend/rest/config.php
+backend/.env

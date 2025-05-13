@@ -43,14 +43,13 @@
                         </button>
 
                         <!-- for renting property -->
-                        <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#rentModal"
-                            style="display: none;">
+                        <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#rentModal">
                             <i class="fa fa-calendar me-2"></i> Rent This Property
                         </button>
 
                         <!-- for deleting listing (agent) -->
                         <button class="btn btn-secondary flex-grow-1" data-bs-toggle="modal"
-                            data-bs-target="#deleteModal">
+                            data-bs-target="#deleteModal" style="display: none;">
                             <i class="far fa-trash-alt me-2"></i> Delete This Listing
                         </button>
                     </div>
@@ -390,24 +389,5 @@
         </div>
     </div>
 </div>
+<script src="./assets/js/flatpickr.js"></script>
 <!-- Footer End -->
-
-<script>
-    flatpickr("#availabilityCalendar", {
-        mode: "range",
-        dateFormat: "Y-m-d",
-        minDate: "today",
-        disable: [
-            {
-                from: "2025-04-01",
-                to: "2025-05-01"
-            },
-            {
-                from: "2025-09-01",
-                to: "2025-12-01"
-            },
-            "2025-04-15",
-            "2025-04-20"
-        ]
-    });
-</script>

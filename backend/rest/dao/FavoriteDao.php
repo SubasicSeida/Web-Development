@@ -2,8 +2,11 @@
 require_once __DIR__ . '/BaseDao.php';
 
 class FavoritesDao extends BaseDao {
-    public function __construct($table = "favorites") {
-        parent::__construct($table);
+    protected $table;
+
+    public function __construct(){
+        $this->table = "favorites";
+        parent::__construct($this->table);
     }
 
     public function getFavoritesByUserId($userId, $page = 1) {

@@ -3,7 +3,10 @@
 require_once __DIR__ . '/BaseDao.php';
 
 class RentalDao extends BaseDao {
-    public function __construct($table = "rentals") {
+    protected $table;
+
+    public function __construct() {
+        $this->table = "rentals";
         parent::__construct($table);
     }
 

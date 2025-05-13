@@ -2,7 +2,10 @@
 require_once __DIR__ . '/BaseDao.php';
 
 class PropertyImagesDao extends BaseDao {
-    public function __construct($table = "property_images") {
+    protected $table;
+
+    public function __construct() {
+        $this->table = "property_images";
         parent::__construct($table);
     }
 

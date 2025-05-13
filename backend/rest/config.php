@@ -1,30 +1,36 @@
 <?php
 
-class Database {
-    private static $host = 'localhost';
-    private static $dbName = 'home_find_real_estate';
-    private static $name = 'root';
-    private static $password = 'hFW5yLylRpx!=2)';
-    private static $connection = null;
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
-    public static function connect() {
-        if (self::$connection === null){
-            try {
-                self::$connection = new PDO(
-                    "mysql:host=" . self::$host . ";dbname=" . self::$dbName,
-                    self::$name, 
-                    self::$password,
-                    [
-                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                    ]
-                );
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL ^ (E_NOTICE | E_DEPRECATED));
 
-            } catch(PDOException $e){
-                die("Connection failed : " . $e->getMessage());
-            }
-        }
-        return self::$connection;
+class Config {
+    public static function DB_NAME(){
+        return 'home_find_real_estate';
+    }
+
+    public static function DB_PORT(){
+        return 3306;
+    }
+
+    public static function DB_USER(){
+        return $_ENV["DB_USER"] ?? null;
+    }
+
+    public static function DB_PASSWORD(){
+        return $_ENV["DB_PASSWORD"] ?? null;
+    }
+
+    public static function DB_HOST()
+    {
+        return '127.0.0.1';
+    }
+
+    public static function JWT_SECRET() {
+        return $_ENV["JWT_SECRET"] ?? null;
     }
 }
 
