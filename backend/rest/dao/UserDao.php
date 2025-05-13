@@ -6,7 +6,7 @@ class UserDao extends BaseDao {
 
     public function __construct() {
         $this->table = "users";
-        parent::__construct($table);
+        parent::__construct($this->table);
     }
 
     public function getByEmail($email) {

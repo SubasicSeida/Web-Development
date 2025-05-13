@@ -6,7 +6,7 @@ class BaseDao {
     private $table;
     protected $connection;
 
-    public function __construct($table_name){
+    public function __construct($table){
         $allowedTables = ['users', 'reviews', 'rentals', 'property_images', 'properties', 'favorites'];
         if (!in_array($table, $allowedTables)) {
             throw new Exception('Invalid table name');

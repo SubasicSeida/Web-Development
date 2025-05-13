@@ -6,7 +6,7 @@ class PropertyDao extends BaseDao {
 
     public function __construct() {
         $this->table = "properties";
-        parent::__construct($table);
+        parent::__construct($this->table);
     }
 
     public function getByAgentId($agentId, $page = 1) {

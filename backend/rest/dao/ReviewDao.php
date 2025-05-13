@@ -6,7 +6,7 @@ class ReviewDao extends BaseDao {
 
     public function __construct() {
         $this->table = "reviews";
-        parent::__construct($table);
+        parent::__construct($this->table);
     }
 
     public function getByPropertyId($propertyId, $page = 1) {

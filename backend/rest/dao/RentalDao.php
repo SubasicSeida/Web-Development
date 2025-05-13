@@ -7,7 +7,7 @@ class RentalDao extends BaseDao {
 
     public function __construct() {
         $this->table = "rentals";
-        parent::__construct($table);
+        parent::__construct($this->table);
     }
 
     public function getUnavailableDates($propertyId) {

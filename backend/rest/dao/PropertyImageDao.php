@@ -6,7 +6,7 @@ class PropertyImagesDao extends BaseDao {
 
     public function __construct() {
         $this->table = "property_images";
-        parent::__construct($table);
+        parent::__construct($this->table);
     }
 
     public function getByPropertyId($propertyId) {
