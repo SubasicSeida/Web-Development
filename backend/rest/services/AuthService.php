@@ -20,8 +20,9 @@ class AuthService extends BaseService {
 
 
    public function register($entity) {  
-       if (empty($entity['email']) || empty($entity['password'])) {
-           return ['success' => false, 'error' => 'Email and password are required.'];
+       if (empty($entity['email']) || empty($entity['password']) || empty($entity['first_name']) 
+            || empty($entity['phone_number'])) {
+           return ['success' => false, 'error' => 'Some required fields are missing.'];
        }
 
        $email_exists = $this->auth_dao->get_user_by_email($entity['email']);
@@ -29,8 +30,13 @@ class AuthService extends BaseService {
            return ['success' => false, 'error' => 'Email already registered.'];
        }
 
+       if (strlen($entity['password']) < 8) {
+            return ['success' => false, 'error' => 'Password must be at least 8 characters long.'];
+        }
+
        $entity['password_hash'] = password_hash($entity['password'], PASSWORD_BCRYPT);
        unset($entity['password']);
+       $entity['user_role'] = 'customer';
        $entity = parent::create($entity);
 
        return ['success' => true, 'data' => $entity];             

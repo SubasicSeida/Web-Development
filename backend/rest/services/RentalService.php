@@ -42,7 +42,7 @@ class RentalService extends BaseService {
             throw new Exception("The selected dates conflict with existing bookings.");
         }
 
-        return $this->create($rentalData);
+        return parent::create($rentalData);
     }
 
     private function validateDate($date) {
@@ -57,6 +57,23 @@ class RentalService extends BaseService {
         
         return $this->dao->getByUserId($userId);
     }
+
+    public function cancelRental($rentalId) {
+        if (!is_numeric($rentalId) || $rentalId <= 0) {
+            throw new Exception("Invalid rental ID.");
+        }
+
+        return parent::delete($rentalId);
+    }
+
+    public function getRentalDetailsByPropertyId($propertyId) {
+        if (!is_numeric($propertyId) || $propertyId <= 0) {
+            throw new Exception("Invalid property ID.");
+        }
+
+        return $this->dao->getByPropertyId($propertyId);
+    }
+
 }
 
 ?>

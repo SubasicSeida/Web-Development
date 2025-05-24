@@ -40,6 +40,31 @@ class RentalDao extends BaseDao {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getRentalDetailsByPropertyId($propertyId) {
+        $sql = "
+        SELECT 
+            r.id AS rental_id,
+            r.property_id,
+            r.user_id,
+            r.start_date,
+            r.end_date,
+            r.created_at,
+            u.first_name,
+            u.last_name,
+            u.email
+        FROM rentals r
+        JOIN users u ON r.user_id = u.id
+        WHERE r.property_id = :property_id
+        ORDER BY r.start_date ASC
+    ";
+
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':property_id', $propertyId);
+    $stmt->execute();
+    return $stmt->fetchAll();
+    }
+
 }
 
 ?>

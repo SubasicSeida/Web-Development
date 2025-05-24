@@ -39,9 +39,19 @@ class PropertyDao extends BaseDao {
         $params = [];
     
         if (!empty($filters['keyword'])) {
-            $baseQuery .= " AND (title LIKE :keyword OR description LIKE :keyword 
-                                OR address LIKE :keyword OR city LIKE :keyword)";
-            $params[':keyword'] = "%" . $filters['keyword'] . "%";
+            $keywords = preg_split('/\s+/', trim($filters['keyword']));
+            $keywordClauses = [];
+
+            foreach ($keywords as $index => $word) {
+                $paramKey = ":keyword$index";
+                $likeClause = "(title LIKE $paramKey OR description LIKE $paramKey OR address LIKE $paramKey OR city LIKE $paramKey)";
+                $keywordClauses[] = $likeClause;
+                $params[$paramKey] = '%' . $word . '%';
+            }
+
+            if (!empty($keywordClauses)) {
+                $baseQuery .= " AND (" . implode(" AND ", $keywordClauses) . ")";
+            }
         }
     
         if (!empty($filters['propertyType'])) {

@@ -33,21 +33,17 @@ class UserService extends BaseService {
             throw new Exception("Password must be at least 8 characters long.");
         }
 
-        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
-        return $this->dao->updatePassword($userId, $hashed);
-    }
-
-    public function createCustomer($userData) {
-        $errors = $this->validateUserData($userData);
-        
-        if (!empty($errors)) {
-            return $errors;
+        $user = parent::getById($userId);
+        if (!$user) {
+            throw new Exception("User not found.");
         }
 
-        $userData['password_hash'] = password_hash($userData['password'], PASSWORD_DEFAULT);
-        unset($userData['password']);
+        if (password_verify($newPassword, $user['password_hash'])) {
+            throw new Exception("New password must be different from the current password.");
+        }
 
-        return $this->dao->createCustomer($userData);
+        $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
+        return parent::update($userId, ['password_hash' => $hashed]);
     }
 
     public function createAgent($userData) {
@@ -59,8 +55,9 @@ class UserService extends BaseService {
 
         $userData['password_hash'] = password_hash($userData['password'], PASSWORD_DEFAULT);
         unset($userData['password']);
+        $userData['role'] = 'agent';
 
-        return $this->dao->createAgent($userData);
+        return parent::create($userData);
     }
 
     private function validateUserData($userData) {
@@ -84,6 +81,61 @@ class UserService extends BaseService {
 
         return $errors;
     }
+
+    public function updateProfilePicture($userId, $picturePath) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new InvalidArgumentException("Invalid user ID.");
+        }
+
+        if (empty($picturePath) || !is_string($picturePath)) {
+            throw new InvalidArgumentException("Invalid profile picture path.");
+        }
+
+        return parent::update($userId, [
+            'profile_picture' => $picturePath
+        ]);
+    }
+
+
+    public function deleteUser($userId) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new InvalidArgumentException("Invalid user ID.");
+        }
+
+        $user = parent::getById(($userId));
+        if(!$user){
+            throw new Exception("User not found.");
+        }
+
+        if ($user['user_role'] !== 'customer') {
+            throw new Exception("Only customers can delete their accounts.");
+        }
+
+        return parent::delete($userId);
+    }
+
+    public function deleteAgentByAdmin($userId) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new Exception("Invalid user ID.");
+        }
+
+        $user = $this->dao->getById($userId);
+        if (!$user) {
+            throw new Exception("User not found.");
+        }
+
+        if ($user['role'] !== 'agent') {
+            throw new Exception("Selected user is not an agent.");
+        }
+
+        $deleted = parent::delete($userId);
+        if (!$deleted) {
+            throw new Exception("Failed to delete agent.");
+        }
+
+        return true;
+    }
+
 }
 
 ?>

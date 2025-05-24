@@ -30,6 +30,25 @@ class FavoriteService extends BaseService {
 
         return $this->dao->isFavorited((int)$userId, (int)$propertyId);
     }
+
+    public function createFavorite($userId, $propertyId) {
+        if (!is_numeric($userId) || !is_numeric($propertyId)) {
+            throw new InvalidArgumentException("Invalid IDs.");
+        }
+
+        return parent::create([
+            'user_id' => $userId,
+            'property_id' => $propertyId
+        ]);
+    }
+
+    public function removeFavorite($userId, $propertyId) {
+        if (!is_numeric($userId) || !is_numeric($propertyId)) {
+            throw new InvalidArgumentException("Invalid IDs.");
+        }
+
+        return $this->dao->removeFavorite($userId, $propertyId);
+    }
 }
 
 ?>

@@ -4,6 +4,8 @@
  * @OA\Get(
  *     path="/properties/agent/{id}",
  *     summary="Get paginated properties listed by a specific agent",
+ *     tags={"Properties"},
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -27,14 +29,17 @@
 
 // get properties by agent ID
 Flight::route('GET /properties/agent/@id', function($id) {
+    Flight::auth_middleware()->authorizeRole(Roles::AGENT, Roles::ADMIN);
+
     $page = Flight::request()->query['page'] ?? 1;
-    Flight::json(Flight::propertyService()->getByAgentId((int)$id, (int)$page));
+    Flight::json(Flight::propertyService()->getByAgentId($id, $page));
 });
 
 /**
  * @OA\Get(
  *     path="/properties/search",
  *     summary="Search properties using filters",
+ *     tags={"Properties"},
  *     @OA\Parameter(name="keyword", in="query", @OA\Schema(type="string")),
  *     @OA\Parameter(name="propertyType", in="query", @OA\Schema(type="string")),
  *     @OA\Parameter(name="listingType", in="query", @OA\Schema(type="string")),
@@ -55,6 +60,8 @@ Flight::route('GET /properties/agent/@id', function($id) {
 
 // search properties with filters
 Flight::route('GET /properties/search', function() {
+    // doesn't need auth bcs it's public info
+    
     $filters = Flight::request()->query->getData();
     try {
         Flight::json(Flight::propertyService()->searchProperties($filters));
@@ -64,9 +71,11 @@ Flight::route('GET /properties/search', function() {
 });
 
 /**
- * @OA\Get(
+ * @OA\Put(
  *     path="/property/{id}",
- *     summary="Get a property by ID",
+ *     summary="Update property details",
+ *     tags={"Properties"},
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -74,23 +83,39 @@ Flight::route('GET /properties/search', function() {
  *         description="Property ID",
  *         @OA\Schema(type="integer")
  *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Property data"
- *     )
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             @OA\Property(property="title", type="string"),
+ *             @OA\Property(property="description", type="string"),
+ *             @OA\Property(property="price", type="number"),
+ *             @OA\Property(property="sqft", type="integer")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Property updated"),
+ *     @OA\Response(response=400, description="Update error")
  * )
  */
 
 
-// get property by ID
-Flight::route('GET /property/@id', function($id) {
-    Flight::json(Flight::propertyService()->getById($id));
+// update property by ID
+Flight::route('PUT /property/@id', function($id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::AGENT]);
+
+    $data = Flight::request()->data->getData();
+    try {
+        Flight::json(Flight::propertyService()->update($id, $data));
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 400);
+    }
 });
 
 /**
  * @OA\Post(
  *     path="/property",
  *     summary="Create a new property",
+ *     tags={"Properties"},
+ *     security={{"ApiKey": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -118,6 +143,8 @@ Flight::route('GET /property/@id', function($id) {
 
 // create a new property
 Flight::route('POST /property', function() {
+    Flight::auth_middleware()->authorizeRole(Roles::AGENT);
+
     $data = Flight::request()->data->getData();
     try {
         Flight::json(Flight::propertyService()->create($data));
@@ -127,45 +154,11 @@ Flight::route('POST /property', function() {
 });
 
 /**
- * @OA\Put(
- *     path="/property/{id}",
- *     summary="Update property details",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         description="Property ID",
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="title", type="string"),
- *             @OA\Property(property="description", type="string"),
- *             @OA\Property(property="price", type="number"),
- *             @OA\Property(property="sqft", type="integer")
- *         )
- *     ),
- *     @OA\Response(response=200, description="Property updated"),
- *     @OA\Response(response=400, description="Update error")
- * )
- */
-
-
-// update property by ID
-Flight::route('PUT /property/@id', function($id) {
-    $data = Flight::request()->data->getData();
-    try {
-        Flight::json(Flight::propertyService()->update($id, $data));
-    } catch (Exception $e) {
-        Flight::json(['error' => $e->getMessage()], 400);
-    }
-});
-
-/**
  * @OA\Delete(
  *     path="/property/{id}",
  *     summary="Delete a property by ID",
+ *     tags={"Properties"},
+ *     security={{"ApiKey": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -181,6 +174,8 @@ Flight::route('PUT /property/@id', function($id) {
 
 // delete property by ID
 Flight::route('DELETE /property/@id', function($id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::AGENT, Roles::ADMIN]);
+
     try {
         Flight::json(Flight::propertyService()->delete($id));
     } catch (Exception $e) {

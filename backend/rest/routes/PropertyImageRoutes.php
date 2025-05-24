@@ -4,6 +4,7 @@
  * @OA\Get(
  *     path="/property/{id}/images",
  *     summary="Get all images for a specific property",
+ *     tags={"Properties"},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -24,8 +25,9 @@
 
 // get all property images
 Flight::route('GET /property/@id/images', function($id) {
+    // doesn't need auth bcs it's public info
     try {
-        Flight::json(Flight::propertyImagesService()->getByPropertyId($id));
+        Flight::json(Flight::propertyImageService()->getByPropertyId($id));
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);
     }

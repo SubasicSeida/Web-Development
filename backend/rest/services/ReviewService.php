@@ -14,9 +14,7 @@ class ReviewService extends BaseService {
             throw new Exception("Invalid property ID.");
         }
 
-        $page = is_numeric($page) && $page > 0 ? (int)$page : 1;
-
-        return $this->dao->getByPropertyId((int)$propertyId, $page);
+        return $this->dao->getByPropertyId($propertyId, $page);
     }
 
     public function getAverageRating($propertyId) {
@@ -24,7 +22,7 @@ class ReviewService extends BaseService {
             throw new Exception("Invalid property ID.");
         }
 
-        return $this->dao->getAverageRating((int)$propertyId);
+        return $this->dao->getAverageRating($propertyId);
     }
 
     public function createReview($data) {
@@ -45,6 +43,32 @@ class ReviewService extends BaseService {
         }
     
         return $this->dao->createReview($data);
+    }
+
+    public function deleteReviewByUserId($userId, $reviewId) {
+        if (!is_numeric($userId) || !is_numeric($reviewId)) {
+            throw new Exception("Invalid IDs.");
+        }
+
+        $result = $this->dao->deleteReviewByUserId($userId, $reviewId);
+        if ($result === 0) {
+            throw new Exception("Review not found or not owned by user.");
+        }
+
+        return true;
+    }
+
+    public function deleteAnyReview($reviewId) {
+        if (!is_numeric($reviewId) || $reviewId <= 0) {
+            throw new Exception("Invalid review ID.");
+        }
+
+        $deleted = parent::delete($reviewId);
+        if ($deleted === 0) {
+            throw new Exception("Review not found.");
+        }
+
+        return true;
     }
     
 }

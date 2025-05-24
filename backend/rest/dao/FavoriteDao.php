@@ -54,6 +54,19 @@ class FavoritesDao extends BaseDao {
         $stmt->execute();
         return $stmt->fetchColumn() > 0;
     }
+
+    public function removeFavorite($userId, $propertyId) {
+        $stmt = $this->connection->prepare("DELETE FROM favorites WHERE user_id = :userId AND property_id = :propertyId");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->bindParam(':propertyId', $propertyId);
+        
+        if ($stmt->execute()) {
+            return $stmt->rowCount();
+        } else {
+            error_log(print_r($stmt->errorInfo(), true));
+            return false;
+        }
+    }
 }
 
 ?>
