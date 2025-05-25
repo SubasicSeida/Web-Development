@@ -97,19 +97,30 @@ Flight::group('/auth', function() {
     * )
     */
    Flight::route('POST /login', function() {
-       $data = Flight::request()->data->getData();
+    try {
+        $data = Flight::request()->data->getData();
 
+        $response = Flight::auth_service()->login($data);
 
-       $response = Flight::auth_service()->login($data);
-  
-       if ($response['success']) {
-           Flight::json([
-               'message' => 'User logged in successfully',
-               'data' => $response['data']
-           ]);
-       } else {
-           Flight::halt(500, $response['error']);
-       }
-   });
+        if ($response['success']) {
+            Flight::json([
+                'message' => 'User logged in successfully',
+                'data' => $response['data']
+            ]);
+        } else {
+            Flight::json([
+                'success' => false,
+                'error' => $response['error']
+            ], 401);
+        }
+
+    } catch (Exception $e) {
+        Flight::json([
+            'success' => false,
+            'error' => 'Internal server error'
+        ], 500);
+    }
+});
+
 });
 ?>

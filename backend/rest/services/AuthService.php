@@ -34,6 +34,10 @@ class AuthService extends BaseService {
             return ['success' => false, 'error' => 'Password must be at least 8 characters long.'];
         }
 
+        if (!empty($entity['phone_number']) && !preg_match('/^\+?[0-9]{7,15}$/', $entity['phone_number'])) {
+            $errors[] = 'Phone number must be between 7 and 15 digits, optionally starting with +.';
+        }
+
        $entity['password_hash'] = password_hash($entity['password'], PASSWORD_BCRYPT);
        unset($entity['password']);
        $entity['user_role'] = 'customer';

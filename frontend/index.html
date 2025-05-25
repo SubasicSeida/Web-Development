@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="assets/css/spapp.css" />
     <link rel="stylesheet" href="assets/css/custom.css" />
 
-    <!-- Favicon -->
-    <link href="assets/img/favicon.ico" rel="icon" />
-
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,6 +28,10 @@
     <!-- Libraries Stylesheet -->
     <link href="assets/lib/animate/animate.min.css" rel="stylesheet" />
     <link href="assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
@@ -66,11 +67,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="#home" class="nav-item nav-link">Home</a>
-                        <a href="#properties" class="nav-item nav-link">Properties</a>
-                        <a href="#agents" class="nav-item nav-link">Agents</a>
+
                     </div>
-                    <a href="#signup" class="btn btn-primary px-3">Sign Up</a>
                 </div>
             </nav>
         </div>
@@ -78,14 +76,7 @@
     </div>
 
     <main id="spapp" role="main">
-        <section id="view-listing"></section>
-        <section id="create-listing"></section>
-        <section id="account"></section>
-        <section id="login"></section>
-        <section id="signup"></section>
-        <section id="agents"></section>
-        <section id="properties"></section>
-        <section id="home" data-load="home.html"></section>
+
     </main>
 
     <!-- JavaScript Libraries -->
@@ -97,6 +88,12 @@
     <!-- SPAPP Javascript -->
     <script src="assets/js/jquery.spapp.js"></script>
 
+    <script src="utils/constants.js"></script>
+    <script src="utils/rest-client.js"></script>
+    <script src="utils/utils.js"></script>
+    <script src="services/user-service.js"></script>
+    <script src="services/property-service.js"></script>
+
     <!-- Custom Javascript -->
     <script src="assets/js/custom.js"></script>
 
@@ -107,6 +104,14 @@
     <script src="assets/lib/easing/easing.min.js"></script>
     <script src="assets/lib/waypoints/waypoints.min.js"></script>
     <script src="assets/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Toastr -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+        UserService.generateDashboard();
+    </script>
 </body>
 
 </html>
