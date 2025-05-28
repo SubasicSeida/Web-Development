@@ -115,7 +115,7 @@ Flight::route('POST /favorites/@id/add', function($propertyId) {
     $user = Flight::get('user');
 
     try {
-        Flight::favoriteService()->createFavorite($user['id'], $propertyId);
+        Flight::favoriteService()->createFavorite($user->id, $propertyId);
         Flight::json(['message' => 'Property favorited.']);
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);
@@ -145,13 +145,13 @@ Flight::route('POST /favorites/@id/add', function($propertyId) {
  *     )
  * )
  */
-Flight::route('GET /favorites/@id/remove', function($propertyId) {
+Flight::route('DELETE /favorites/@id/remove', function($propertyId) {
     Flight::auth_middleware()->authorizeRole(Roles::CUSTOMER);
 
     $user = Flight::get('user');
 
     try {
-        Flight::favoriteService()->removeFavorite($user['id'], $propertyId);
+        Flight::favoriteService()->removeFavorite($user->id, $propertyId);
         Flight::json(['message' => 'Property unfavorited.']);
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);

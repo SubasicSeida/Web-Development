@@ -87,8 +87,9 @@ var PropertyService = {
                                         class="fa fa-bath text-primary me-2"></i>
                                         ${this.safeDisplay(property.bathrooms)}
                                 </small>
-                                <small class="flex-fill text-center py-2"><a class="star-toggle"><i
-                                            class="far fa-star text-warning ms-2"></i></a></small>
+                                <small class="flex-fill text-center py-2"><a class="star-toggle" data-id="${property.id}"
+                                onClick="PropertyService.toggleStar(this)">
+                                    <i class="far fa-star text-warning ms-2"></i></a></small>
                             </div>
                         </div>
                     </div>
@@ -101,4 +102,47 @@ var PropertyService = {
         return value ?? fallback;
     },
 
+    toggleStar: function (element) {
+        const token = localStorage.getItem("user_token");
+
+        let icon = $(this).find('i');
+        const propertyId = $(element).data('id');
+        const isFavorite = icon.hasClass('far');
+
+        icon.toggleClass('far').toggleClass('fas');
+
+        if (isFavorite) {
+            this.addFavorite(propertyId);
+        } else {
+            this.removeFavorite(propertyId);
+        }
+    },
+
+    addFavorite: function (propertyId) {
+        RestClient.post(
+            "favorites/" + propertyId + "/add",
+            { property_id: propertyId },
+            function () {
+                toastr.success("Added to favorites!");
+            },
+            function (xhr) {
+                icon?.toggleClass('far').toggleClass('fas');
+                toastr.error(xhr?.responseJSON?.error || "Failed to add favorite.");
+            }
+        );
+    },
+
+    removeFavorite: function (propertyId) {
+        RestClient.delete(
+            "favorites/" + propertyId + "/remove",
+            { property_id: propertyId },
+            function () {
+                toastr.info("Removed from favorites.");
+            },
+            function (xhr) {
+                icon?.toggleClass('far').toggleClass('fas');
+                toastr.error(xhr?.responseJSON?.error || "Failed to remove favorite.");
+            }
+        );
+    }
 };
