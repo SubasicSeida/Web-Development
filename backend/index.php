@@ -42,15 +42,10 @@ Flight::route('/*', function() {
         ))
     ) {
         return TRUE;
-    } else {
-        try {
-            $token = Flight::request()->getHeader("Authentication");
-            if(Flight::auth_middleware()->verifyToken($token))
-                return TRUE;
-        } catch (\Exception $e) {
-            Flight::halt(401, $e->getMessage());
-        }
     }
+    
+    $token = Flight::request()->getHeader('Authentication');
+    return Flight::auth_middleware()->verifyToken($token);
 });
 
 

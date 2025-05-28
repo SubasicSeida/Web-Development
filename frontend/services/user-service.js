@@ -5,6 +5,7 @@ var UserService = {
         if (token && token !== undefined) {
             window.location.replace("index.html");
         }
+
         $("#login-form").validate({
             rules: {
                 "email": {
@@ -112,6 +113,13 @@ var UserService = {
 
     generateDashboard: function () {
         const token = localStorage.getItem("user_token");
+        const payload = Utils.parseJwt(token);
+
+        if (payload?.exp < Date.now() / 1000) {
+            localStorage.clear();
+            toastr.info("Session expired. Please log in again.")
+            window.location.href = "login.html";
+        }
 
         let nav = `
             <a href="#home" class="nav-item nav-link">Home</a>
@@ -128,6 +136,13 @@ var UserService = {
 
         if (token) {
             const user = Utils.parseJwt(token).user;
+
+            if (!user) {
+                localStorage.clear();
+                window.location.replace("login.html");
+                return;
+            }
+
 
             console.log("User role:", user.user_role);
             console.log("Expected (customer):", Constants.CUSTOMER_ROLE);
