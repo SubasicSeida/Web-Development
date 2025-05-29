@@ -1,208 +1,393 @@
 <div class="container-fluid header bg-white p-0">
-  <div class="row g-0 align-items-center flex-column-reverse flex-md-row px-5">
-    <div class="container my-5" style="margin-top: 10rem !important">
-      <div class="row px-5">
-        <h2 class="mb-4">Golden Urban House For Sell</h2>
-        <div class="col-md-6">
-          <div class="row">
+    <div class="row g-0 align-items-center flex-column-reverse flex-md-row px-5">
+        <div class="container my-5" style="margin-top: 10rem !important">
+            <div class="row px-5">
+                <h2 class="mb-4">Golden Urban House For Sell</h2>
+                <div class="col-md-6">
+                    <div class="row">
 
-            <div class="col-md-6 mb-4">
-              <img src="assets/img/property-1.jpg" alt="Property Image 1" class="img-fluid rounded gallery-image"
-                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
-                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-1.jpg')" />
-            </div>
+                        <div class="col-md-6 mb-4">
+                            <img src="assets/img/property-1.jpg" alt="Property Image 1"
+                                class="img-fluid rounded gallery-image"
+                                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                                data-bs-target="#galleryModal" />
+                        </div>
 
-            <div class="col-md-6 mb-4">
-              <img src="assets/img/property-2.jpg" alt="Property Image 2" class="img-fluid rounded gallery-image"
-                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
-                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-2.jpg')" />
-            </div>
+                        <div class="col-md-6 mb-4">
+                            <img src="assets/img/property-2.jpg" alt="Property Image 2"
+                                class="img-fluid rounded gallery-image"
+                                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                                data-bs-target="#galleryModal" />
+                        </div>
 
-            <div class="col-md-6 mb-4">
-              <img src="assets/img/property-3.jpg" alt="Property Image 3" class="img-fluid rounded gallery-image"
-                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
-                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-3.jpg')" />
-            </div>
+                        <div class="col-md-6 mb-4">
+                            <img src="assets/img/property-3.jpg" alt="Property Image 3"
+                                class="img-fluid rounded gallery-image"
+                                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                                data-bs-target="#galleryModal" />
+                        </div>
 
-            <div class="col-md-6 mb-4">
-              <img src="assets/img/property-2.jpg" alt="Property Image 4" class="img-fluid rounded gallery-image"
-                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
-                data-bs-target="#galleryModal" onclick="openGalleryModal('assets/img/property-2.jpg')" />
+                        <div class="col-md-6 mb-4">
+                            <img src="assets/img/property-2.jpg" alt="Property Image 4"
+                                class="img-fluid rounded gallery-image"
+                                style="cursor: pointer; transition: transform 0.3s ease" data-bs-toggle="modal"
+                                data-bs-target="#galleryModal" />
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-3">
+                        <!-- for buying property -->
+                        <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#buyModal"
+                            style="display: none;">
+                            <i class="fa fa-home me-2"></i> Buy This Property
+                        </button>
+
+                        <!-- for renting property -->
+                        <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#rentModal">
+                            <i class="fa fa-calendar me-2"></i> Rent This Property
+                        </button>
+
+                        <!-- for deleting listing (agent) -->
+                        <button class="btn btn-secondary flex-grow-1" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" style="display: none;">
+                            <i class="far fa-trash-alt me-2"></i> Delete This Listing
+                        </button>
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-6">
+                    <h3 class="text-primary mb-4">$12,345</h3>
+                    <p>
+                        <i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street,
+                        New York, USA
+                    </p>
+                    <p><i class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</p>
+                    <p><i class="fa fa-bed text-primary me-2"></i>3 Bed</p>
+                    <p><i class="fa fa-bath text-primary me-2"></i>2 Bath</p>
+                    <p><strong>Property Type:</strong> House</p>
+                    <p><strong>Description:</strong></p>
+                    <p>
+                        This stunning urban house is located in the heart of New York City.
+                        It features 3 spacious bedrooms, 2 modern bathrooms, and a large
+                        living area. The property is perfect for families or professionals
+                        looking for a comfortable and stylish home. The house is equipped
+                        with state-of-the-art appliances and offers breathtaking views of
+                        the city skyline.
+                    </p>
+                    <p><strong>Additional Features:</strong></p>
+                    <ul>
+                        <li>Open-concept living and dining area</li>
+                        <li>Modern kitchen with granite countertops</li>
+                        <li>Private backyard with a patio</li>
+                        <li>Secure parking space</li>
+                        <li>Close to schools, parks, and shopping centers</li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
 
+        <!-- Reviews Section -->
+        <div class="row mt-5">
+            <div class="col px-3">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0">Reviews</h3>
+                    <div class="d-flex align-items-center">
+                        <div class="text-center me-4">
+                            <h2 class="mb-0"><i style="color: orange;" class="fas fa-star"></i>4.3</h2>
+                            <small class="text-muted">12 reviews</small>
+                        </div>
 
-        <div class="col-md-6">
-          <h3 class="text-primary mb-4">$12,345</h3>
-          <p>
-            <i class="fa fa-map-marker-alt text-primary me-2"></i>123 Street,
-            New York, USA
-          </p>
-          <p><i class="fa fa-ruler-combined text-primary me-2"></i>1000 Sqft</p>
-          <p><i class="fa fa-bed text-primary me-2"></i>3 Bed</p>
-          <p><i class="fa fa-bath text-primary me-2"></i>2 Bath</p>
-          <p><strong>Property Type:</strong> House</p>
-          <p><strong>Description:</strong></p>
-          <p>
-            This stunning urban house is located in the heart of New York City.
-            It features 3 spacious bedrooms, 2 modern bathrooms, and a large
-            living area. The property is perfect for families or professionals
-            looking for a comfortable and stylish home. The house is equipped
-            with state-of-the-art appliances and offers breathtaking views of
-            the city skyline.
-          </p>
-          <p><strong>Additional Features:</strong></p>
-          <ul>
-            <li>Open-concept living and dining area</li>
-            <li>Modern kitchen with granite countertops</li>
-            <li>Private backyard with a patio</li>
-            <li>Secure parking space</li>
-            <li>Close to schools, parks, and shopping centers</li>
-          </ul>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">John Doe</h5>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <p class="card-text">Great property with a beautiful view! The location is perfect, and the
+                            house is very
+                            spacious.</p>
+                        <small class="text-muted">Posted on October 1, 2023</small>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Jane Smith</h5>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="card-text">Absolutely loved this house! The modern design and amenities are top-notch.
+                            Highly
+                            recommend!</p>
+                        <small class="text-muted">Posted on September 25, 2023</small>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Michael Brown</h5>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <p class="card-text">Nice property, but the neighborhood is a bit noisy. Otherwise, it's a great
+                            deal for
+                            the price.</p>
+                        <small class="text-muted">Posted on September 15, 2023</small>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- Reviews Section -->
-    <div class="row mt-5">
-      <div class="col px-3">
-        <h3>Reviews</h3>
-
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">John Doe</h5>
-            <div class="text-warning">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <p class="card-text">Great property with a beautiful view! The location is perfect, and the house is very
-              spacious.</p>
-            <small class="text-muted">Posted on October 1, 2023</small>
-          </div>
+    <!-- Review Form -->
+    <div class="row mt-5 py-5">
+        <div class="col" style="padding-left: 7rem !important; padding-right: 7rem !important;">
+            <h4>Leave a Review</h4>
+            <form id="reviewForm">
+                <div class="mb-3">
+                    <h5>Rating : </h5>
+                    <i class="far fa-star text-warning ms-2 star-rating" data-value="1"></i>
+                    <i class="far fa-star text-warning ms-2 star-rating" data-value="2"></i>
+                    <i class="far fa-star text-warning ms-2 star-rating" data-value="3"></i>
+                    <i class="far fa-star text-warning ms-2 star-rating" data-value="4"></i>
+                    <i class="far fa-star text-warning ms-2 star-rating" data-value="5"></i>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Comment</label>
+                    <textarea class="form-control" id="comment" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </form>
         </div>
-
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Jane Smith</h5>
-            <div class="text-warning">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <p class="card-text">Absolutely loved this house! The modern design and amenities are top-notch. Highly
-              recommend!</p>
-            <small class="text-muted">Posted on September 25, 2023</small>
-          </div>
-        </div>
-
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">Michael Brown</h5>
-            <div class="text-warning">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <p class="card-text">Nice property, but the neighborhood is a bit noisy. Otherwise, it's a great deal for
-              the price.</p>
-            <small class="text-muted">Posted on September 15, 2023</small>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Review Form -->
-  <div class="row mt-5 py-5">
-    <div class="col" style="padding-left: 7rem !important; padding-right: 7rem !important;">
-      <h4>Leave a Review</h4>
-      <form id="reviewForm">
-        <div class="mb-3">
-          <h5>Rating : </h5>
-          <i class="far fa-star text-warning ms-2"></i>
-          <i class="far fa-star text-warning ms-2"></i>
-          <i class="far fa-star text-warning ms-2"></i>
-          <i class="far fa-star text-warning ms-2"></i>
-          <i class="far fa-star text-warning ms-2"></i>
-        </div>
-        <div class="mb-3">
-          <label for="comment" class="form-label">Comment</label>
-          <textarea class="form-control" id="comment" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit Review</button>
-      </form>
-    </div>
-  </div>
+    <!-- Gallery Modal -->
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Property Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Property Image" class="img-fluid" />
 
-  <!-- Gallery Modal -->
-  <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="galleryModalLabel">Property Image</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button id="prevImage"
+                        class="btn btn-light position-absolute start-0 top-50 translate-middle-y ms-2">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button id="nextImage" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+
+                </div>
+            </div>
         </div>
-        <div class="modal-body text-center">
-          <img id="modalImage" src="" alt="Property Image" class="img-fluid" />
-        </div>
-      </div>
     </div>
-  </div>
+
+    <!-- Buy Modal -->
+    <div class="modal fade" id="buyModal" tabindex="-1" aria-labelledby="buyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buyModalLabel">Purchase This Property</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="buyForm">
+                        <div class="mb-3">
+                            <label for="buyerName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="buyerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="buyerEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="buyerEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="buyerPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="buyerPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="buyerMessage" class="form-label">Additional Notes</label>
+                            <textarea class="form-control" id="buyerMessage" rows="3"></textarea>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="buyerAgreement" required>
+                            <label class="form-check-label" for="buyerAgreement">
+                                I agree to the terms and conditions
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success">Confirm Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rent Modal -->
+    <div class="modal fade" id="rentModal" tabindex="-1" aria-labelledby="rentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rentModalLabel">Rent This Property</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="rentForm">
+                        <div class="mb-3">
+                            <label for="renterName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="renterName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="renterEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="renterEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="renterPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="renterPhone" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="availabilityCalendar" class="form-label">Choose from available dates</label>
+                            <div class="date-picker-calendar">
+                                <!-- Flatpickr Calendar -->
+                                <input id="availabilityCalendar" placeholder="See Calendar"
+                                    class="form-control flatpickr" />
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="renterAgreement" required>
+                            <label class="form-check-label" for="renterAgreement">
+                                I agree to the rental terms and conditions
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success">Confirm Rental</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="deleteModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i> Delete Listing
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0 text-danger fs-4 me-3">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h6>Are you sure you want to delete this listing?</h6>
+                            <p class="text-muted mb-0">This action cannot be undone. All property data, images, and
+                                associated information will be permanently removed.</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Note:</strong> This listing has 12 reviews and 3 saved favorites. Deleting will remove
+                        it from all search results.
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt me-2"></i> Delete Permanently
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </div>
 
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-  <div class="container py-5">
-    <div class="row g-5">
-      <div class="col-lg-4 col-md-6">
-        <section id="contact">
-          <h5 class="text-white mb-4">Get In Touch</h5>
-          <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-          <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-          <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-          <div class="d-flex pt-2">
-            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </section>
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <h5 class="text-white mb-4">Quick Links</h5>
-        <a class="btn btn-link text-white-50" href="">About Us</a>
-        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-        <a class="btn btn-link text-white-50" href="">Our Services</a>
-        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <h5 class="text-white mb-4">Newsletter</h5>
-        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-        <div class="position-relative mx-auto" style="max-width: 400px;">
-          <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-          <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-4 col-md-6">
+                <section id="contact">
+                    <h5 class="text-white mb-4">Get In Touch</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </section>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-white mb-4">Quick Links</h5>
+                <a class="btn btn-link text-white-50" href="">About Us</a>
+                <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                <a class="btn btn-link text-white-50" href="">Our Services</a>
+                <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-white mb-4">Newsletter</h5>
+                <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                <div class="position-relative mx-auto" style="max-width: 400px;">
+                    <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
+                        placeholder="Your email">
+                    <button type="button"
+                        class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="container">
-    <div class="copyright">
-      <div class="row">
-        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-          &copy; <a class="border-bottom" href="#">HomeFind</a>, All Right Reserved.
+    <div class="container">
+        <div class="copyright">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    &copy; <a class="border-bottom" href="#">HomeFind</a>, All Right Reserved.
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+<script src="./assets/js/flatpickr.js"></script>
 <!-- Footer End -->
