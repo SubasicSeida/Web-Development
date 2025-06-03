@@ -32,14 +32,17 @@ var PropertyService = {
             type: "GET",
             data: filters,
             success: (response) => {
-                console.log("Search response:", response);
-                this.renderProperties(response.data);
+                //console.log("Search response:", response);
+                PropertyService.getUserFavorites(function (favorites) {
+                    PropertyService.renderProperties(response.data, favorites);
+                })
+
             },
             error: (xhr) => toastr.error(xhr?.responseJSON?.error || "Failed to load properties.")
         });
     },
 
-    renderProperties: function (properties) {
+    renderProperties: function (properties, favorites = []) {
         const container = $("#property-list");
         container.empty();
 
@@ -49,6 +52,9 @@ var PropertyService = {
         }
 
         properties.forEach(property => {
+            const isFavorited = favorites.includes(property.id);
+            const starIconClass = isFavorited ? "fas" : "far";
+
             const card = `
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="property-item rounded overflow-hidden">
@@ -87,9 +93,9 @@ var PropertyService = {
                                         class="fa fa-bath text-primary me-2"></i>
                                         ${this.safeDisplay(property.bathrooms)}
                                 </small>
-                                <small class="flex-fill text-center py-2"><a class="star-toggle" data-id="${property.id}"
-                                >
-                                    <i class="far fa-star text-warning ms-2"></i></a></small>
+                                <small class="flex-fill text-center py-2"><a class="star-toggle" data-id="${property.id}">
+                                    <i class="${starIconClass} fa-star text-warning ms-2"></i></a>
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -142,6 +148,27 @@ var PropertyService = {
                 // revert star toggle if failed
                 icon.removeClass('far').addClass('fas');
                 toastr.error(xhr?.responseJSON?.error || "Failed to remove favorite.");
+            }
+        );
+    },
+
+    getUserFavorites: function (callback) {
+        const token = localStorage.getItem("user_token");
+        const payload = Utils.parseJwt(token);
+        const userId = payload?.user?.id;
+
+        if (!userId) return callback([]);
+
+        RestClient.get(
+            "favorites",
+            function (response) {
+                //console.log("favorites response:", response);
+                // response here is all property ids returned as favorites
+                callback(response);
+            },
+            function () {
+                toastr.error("Failed to load favorites.");
+                callback([])
             }
         );
     }

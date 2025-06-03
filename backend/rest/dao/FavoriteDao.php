@@ -9,7 +9,7 @@ class FavoritesDao extends BaseDao {
         parent::__construct($this->table);
     }
 
-    public function getFavoritesByUserId($userId, $page = 1) {
+    public function getPaginatedFavorites($userId, $page = 1) {
         $limit = 3;
         $offset = ($page - 1) * $limit;
 
@@ -45,6 +45,13 @@ class FavoritesDao extends BaseDao {
                 'total_pages' => ceil($total / $limit)
             ]
         ];
+    }
+
+    public function getFavoritesByUserId($userId) {
+        $stmt = $this->connection->prepare("SELECT property_id FROM favorites WHERE user_id = :userId");
+        $stmt->bindParam(':userId', $userId);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
     public function isFavorited($userId, $propertyId) {
