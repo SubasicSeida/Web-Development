@@ -8,5 +8,4 @@ require_once 'PropertyImageDao.php';
 
 
 
-
 ?>

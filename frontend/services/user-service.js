@@ -1,4 +1,16 @@
-var UserService = {
+let UserService = {
+
+    /* 
+
+    1. init
+    2. login
+    3. register
+    4. logout
+    5. generateDashboard
+    6. generateProfile
+    7. safeDisplay
+
+     */
 
     init: function () {
         var token = localStorage.getItem("user_token");
@@ -41,7 +53,7 @@ var UserService = {
                 toastr.success("Login Successful!");
                 setTimeout(() => {
                     window.location.replace("index.html");
-                }, 1500);
+                }, 1000);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 toastr.error(JSON.parse(XMLHttpRequest.responseText)?.error || "An error occurred");
@@ -95,7 +107,7 @@ var UserService = {
                         toastr.success("Registration successful! Redirecting to login...");
                         setTimeout(() => {
                             window.location.href = "login.html";
-                        }, 1500);
+                        }, 1000);
                     },
                     error: function (xhr) {
                         toastr.error(xhr?.responseJSON?.error || "Registration failed.");
@@ -111,7 +123,7 @@ var UserService = {
         toastr.info("You logged out");
         setTimeout(() => {
             window.location.href = "login.html";
-        }, 1500);
+        }, 1000);
     },
 
     generateDashboard: function () {
@@ -148,7 +160,6 @@ var UserService = {
 
 
             console.log("User role:", user.user_role);
-            console.log("Expected (customer):", Constants.CUSTOMER_ROLE);
 
             if (user.user_role === Constants.CUSTOMER_ROLE) {
                 nav += `
@@ -185,5 +196,57 @@ var UserService = {
 
         $("#navbarCollapse .navbar-nav").html(nav);
         $("#spapp").append(main);
+    },
+
+    generateProfile: function () {
+        RestClient.get(
+            "user/id",
+            (user) => {
+                this.renderProfile(user);
+            },
+            function (xhr) {
+                toastr.error("Failed to load profile info.");
+            }
+        );
+    },
+
+    renderProfile: function (user) {
+        const container = $(".profile-section");
+        container.empty();
+        const picture = user.profile_picture || "default.png";
+        const role = user.user_role.charAt(0).toUpperCase() + user.user_role.slice(1);
+
+        const content = `
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 text-center">
+                    <img src="assets/img/${picture}" alt="Profile Picture"
+                        class="img-fluid rounded-circle mb-3 profile-picture" />
+                    <h2 style="margin-bottom: 2rem;">${this.safeDisplay(user.first_name)}</h2>
+                    <p>${role}</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        Edit Profile
+                    </button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
+                        Delete Profile
+                    </button>
+                </div>
+                <div class="col-lg-6 col-md-8 offset-md-0 col-10 offset-1 pt-sm-5 pt-5">
+                    <h3>Profile Information</h3>
+                    <p style="padding-top: 1rem"><strong>Full Name:</strong> ${this.safeDisplay(user.first_name)} ${this.safeDisplay(user.last_name)}</p>
+                    <p>
+                        <strong>Email:</strong> ${user.email}
+                    </p>
+                    <p>
+                        <strong>Phone:</strong> ${this.safeDisplay(user.phone_number)}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        container.append(content);
+    },
+
+    safeDisplay: function (value, fallback = 'N/A') {
+        return value ?? fallback;
     }
 };

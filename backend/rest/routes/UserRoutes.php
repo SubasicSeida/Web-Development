@@ -2,6 +2,35 @@
 
 /**
  * @OA\Get(
+ *     path="/user/id",
+ *     summary="Get user by id",
+ *     tags={"Users"},
+ *     security={{"ApiKey": {}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="User data"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid id"
+ *     )
+ * )
+ */
+
+Flight::route('GET /user/id', function() {
+    Flight::auth_middleware()->authorizeRoles([Roles::CUSTOMER, Roles::AGENT]);
+
+    $user = Flight::get('user');
+
+    try {
+        Flight::json(Flight::userService()->getById($user->id));
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 400);
+    }
+});
+
+/**
+ * @OA\Get(
  *     path="/user/email/{email}",
  *     summary="Get user by email",
  *     tags={"Users"},

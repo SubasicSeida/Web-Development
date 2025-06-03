@@ -1,29 +1,7 @@
 <div class="container-fluid header bg-white p-0">
     <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
         <div class="container my-5 profile-section" style="margin-top: 10rem !important">
-            <div class="row justify-content-center">
-                <div class="col-lg-6 col-md-8 text-center">
-                    <img src="assets/img/profile_placeholder.png" alt="Profile Picture"
-                        class="img-fluid rounded-circle mb-3 profile-picture" />
-                    <h2 style="margin-bottom: 2rem;">John</h2>
-                    <p>Customer/Agent</p>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                        Edit Profile
-                    </button>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProfileModal">
-                        Delete Profile
-                    </button>
-                </div>
-                <div class="col-lg-6 col-md-8 offset-md-0 col-10 offset-1 pt-sm-5 pt-5">
-                    <h3>Profile Information</h3>
-                    <p style="padding-top: 1rem"><strong>Full Name:</strong> John Doe</p>
-                    <p>
-                        <strong>Email:</strong> john.doe@example.com
-                    </p>
-                    <p><strong>Phone:</strong> +123 456 7890</p>
 
-                </div>
-            </div>
         </div>
     </div>
 
@@ -337,7 +315,7 @@
                     <form>
 
                         <div class="mb-3 text-center">
-                            <img id="profilePreview" src="assets/img/profile_placeholder.png" alt="Profile Picture"
+                            <img id="profilePreview" src="assets/img/default.png" alt="Profile Picture"
                                 class="rounded-circle mb-2" width="100" height="100">
                             <label style="display: block; text-align: left;" for="editProfilePicture"
                                 class="form-label">Change Profile
@@ -445,3 +423,7 @@
         </div>
     </div>
     <!-- Footer End -->
+
+    <script>
+        UserService.generateProfile();
+    </script>

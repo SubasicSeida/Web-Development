@@ -1,5 +1,19 @@
 var PropertyService = {
 
+    /* 
+
+    1. init
+    2. getFiltersFromHash 
+    3. search 
+    4. renderProperties
+    5. safeDisplay
+    6. toggleStar
+    7. addFavorite
+    8. removeFavorite
+    9. getUserFavorites
+    
+     */
+
     init: function () {
         $("#search-form")[0].reset();
         window.location.hash = "properties";
