@@ -88,7 +88,7 @@ var PropertyService = {
                                         ${this.safeDisplay(property.bathrooms)}
                                 </small>
                                 <small class="flex-fill text-center py-2"><a class="star-toggle" data-id="${property.id}"
-                                onClick="PropertyService.toggleStar(this)">
+                                >
                                     <i class="far fa-star text-warning ms-2"></i></a></small>
                             </div>
                         </div>
@@ -103,22 +103,20 @@ var PropertyService = {
     },
 
     toggleStar: function (element) {
-        const token = localStorage.getItem("user_token");
-
-        let icon = $(this).find('i');
+        let icon = $(element).find('i');
         const propertyId = $(element).data('id');
-        const isFavorite = icon.hasClass('far');
+        const isAdding = icon.hasClass('far');
 
-        icon.toggleClass('far').toggleClass('fas');
-
-        if (isFavorite) {
-            this.addFavorite(propertyId);
+        if (isAdding) {
+            icon.removeClass('far').addClass('fas');
+            this.addFavorite(propertyId, icon);
         } else {
-            this.removeFavorite(propertyId);
+            icon.removeClass('fas').addClass('far');
+            this.removeFavorite(propertyId, icon);
         }
     },
 
-    addFavorite: function (propertyId) {
+    addFavorite: function (propertyId, icon) {
         RestClient.post(
             "favorites/" + propertyId + "/add",
             { property_id: propertyId },
@@ -126,13 +124,14 @@ var PropertyService = {
                 toastr.success("Added to favorites!");
             },
             function (xhr) {
-                icon?.toggleClass('far').toggleClass('fas');
+                // revert star toggle if failed
+                icon.removeClass('fas').addClass('far');
                 toastr.error(xhr?.responseJSON?.error || "Failed to add favorite.");
             }
         );
     },
 
-    removeFavorite: function (propertyId) {
+    removeFavorite: function (propertyId, icon) {
         RestClient.delete(
             "favorites/" + propertyId + "/remove",
             { property_id: propertyId },
@@ -140,7 +139,8 @@ var PropertyService = {
                 toastr.info("Removed from favorites.");
             },
             function (xhr) {
-                icon?.toggleClass('far').toggleClass('fas');
+                // revert star toggle if failed
+                icon.removeClass('far').addClass('fas');
                 toastr.error(xhr?.responseJSON?.error || "Failed to remove favorite.");
             }
         );

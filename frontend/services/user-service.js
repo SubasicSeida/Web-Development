@@ -109,9 +109,9 @@ var UserService = {
     logout: function () {
         localStorage.clear();
         toastr.info("You logged out");
-        /*     setTimeout(() => {
-                window.location.href = "login.html";
-            }, 1500); */
+        setTimeout(() => {
+            window.location.href = "login.html";
+        }, 1500);
     },
 
     generateDashboard: function () {

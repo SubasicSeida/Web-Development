@@ -45,7 +45,7 @@ $(document).ready(function () {
         "positionClass": "toast-top-right",
         "preventDuplicates": false,
         "onclick": null,
-        "showDuration": "5000",
+        "showDuration": "300",
         "hideDuration": "1000",
         "timeOut": "2000",
         "showEasing": "swing",
@@ -167,9 +167,12 @@ $(document).ready(function () {
 
 
     /*** Star toggle ***/
-    $(document).on('click', '.star-toggle', function () {
+    /* $(document).on('click', '.star-toggle', function () {
         var icon = $(this).find('i');
         icon.toggleClass('far').toggleClass('fas');
+    }); */
+    $(document).on('click', '.star-toggle', function () {
+        PropertyService.toggleStar(this);
     });
 
 
