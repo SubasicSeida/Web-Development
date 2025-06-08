@@ -166,11 +166,6 @@ $(document).ready(function () {
     }
 
 
-    /*** Star toggle ***/
-    /* $(document).on('click', '.star-toggle', function () {
-        var icon = $(this).find('i');
-        icon.toggleClass('far').toggleClass('fas');
-    }); */
     $(document).on('click', '.star-toggle', function () {
         PropertyService.toggleStar(this);
     });

@@ -1,4 +1,4 @@
-var PropertyService = {
+let PropertyService = {
 
     /* 
 

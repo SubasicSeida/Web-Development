@@ -146,6 +146,8 @@ Flight::route('POST /property', function() {
     Flight::auth_middleware()->authorizeRole(Roles::AGENT);
 
     $data = Flight::request()->data->getData();
+    $user = Flight::get('user');
+    $data['agent_id'] = $user->id;
     try {
         Flight::json(Flight::propertyService()->create($data));
     } catch (Exception $e) {
