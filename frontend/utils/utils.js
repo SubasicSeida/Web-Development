@@ -22,5 +22,16 @@ let Utils = {
             console.error("Invalid JWT token", e);
             return null;
         }
+    },
+
+    getParameterFromHash: function (key) {
+        const hash = window.location.hash.substring(1);
+        const queryIndex = hash.indexOf("?");
+        if (queryIndex === -1) return null;
+
+        const queryString = hash.substring(queryIndex + 1);
+        const params = new URLSearchParams(queryString);
+        return params.get(key);
     }
+
 }

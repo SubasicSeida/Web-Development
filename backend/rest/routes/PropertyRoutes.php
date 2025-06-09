@@ -1,5 +1,20 @@
 <?php
 
+Flight::route('GET /property/@id', function($id) {
+    try {
+        $property = Flight::propertyService()->getById($id);
+
+        if (!$property) {
+            Flight::json(['error' => 'Property not found.'], 404);
+        } else {
+            Flight::json($property);
+        }
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
+});
+
+
 /**
  * @OA\Get(
  *     path="/properties/agent/{id}",
