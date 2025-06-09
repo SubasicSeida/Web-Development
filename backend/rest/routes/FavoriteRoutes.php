@@ -36,7 +36,34 @@ Flight::route('GET /favorites/user/@id', function($id) {
     $page = Flight::request()->query['page'] ?? 1;
 
     try {
-        Flight::json(Flight::favoriteService()->getFavoritesByUserId($id, $page));
+        Flight::json(Flight::favoriteService()->getPaginatedFavorites($id, $page));
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 400);
+    }
+});
+
+/**
+ * @OA\Get(
+ *     path="/favorites",
+ *     summary="Get all user's favorite properties",
+ *     tags={"Favorites"},
+ *     security={{"ApiKey": {}}},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of property ids"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid user ID"
+ *     )
+ * )
+ */
+Flight::route('GET /favorites', function() {
+    Flight::auth_middleware()->authorizeRole(Roles::CUSTOMER);
+    $user = Flight::get('user'); 
+
+    try {
+        Flight::json(Flight::favoriteService()->getFavoritesByUserId($user->id));
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);
     }
@@ -115,7 +142,7 @@ Flight::route('POST /favorites/@id/add', function($propertyId) {
     $user = Flight::get('user');
 
     try {
-        Flight::favoriteService()->createFavorite($user['id'], $propertyId);
+        Flight::favoriteService()->createFavorite($user->id, $propertyId);
         Flight::json(['message' => 'Property favorited.']);
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);
@@ -145,13 +172,13 @@ Flight::route('POST /favorites/@id/add', function($propertyId) {
  *     )
  * )
  */
-Flight::route('GET /favorites/@id/remove', function($propertyId) {
+Flight::route('DELETE /favorites/@id/remove', function($propertyId) {
     Flight::auth_middleware()->authorizeRole(Roles::CUSTOMER);
 
     $user = Flight::get('user');
 
     try {
-        Flight::favoriteService()->removeFavorite($user['id'], $propertyId);
+        Flight::favoriteService()->removeFavorite($user->id, $propertyId);
         Flight::json(['message' => 'Property unfavorited.']);
     } catch (Exception $e) {
         Flight::json(['error' => $e->getMessage()], 400);

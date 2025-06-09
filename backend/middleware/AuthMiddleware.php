@@ -8,12 +8,24 @@ class AuthMiddleware {
     public function verifyToken($token) {
         if(!$token) {
             Flight::halt(401, "Missing authentication header");
+            return FALSE;
+        }
+
+        try {
             $decoded_token = JWT::decode($token, new Key(Config::JWT_SECRET(), 'HS256'));
-            
+
+            $now = new DateTimeImmutable();
+            if (isset($decoded_token->exp) && $decoded_token->exp < $now->getTimestamp()) {
+                throw new Exception("Token has expired");
+            }
+
             Flight::set('user', $decoded_token->user);
             Flight::set('jwt_token', $token);
             
             return TRUE;
+        } catch (Exception $e) {
+            Flight::halt(401, "Invalid token: " . $e->getMessage());
+            return false;
         }
     }
 

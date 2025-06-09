@@ -27,6 +27,30 @@ class PropertyImageService extends BaseService {
             ]];
         }
     }
+
+    public function createImagesForProperty($propertyId, array $imageUrls) {
+        if (!is_numeric($propertyId) || (int)$propertyId <= 0) {
+            throw new Exception("Invalid property ID.");
+        }
+
+        $createdImages = [];
+
+        foreach ($imageUrls as $imageUrl) {
+            if (empty($imageUrl)) {
+                continue;
+            }
+
+            $imageData = [
+                'property_id' => $propertyId,
+                'image_url' => $imageUrl
+            ];
+
+            $createdImage = $this->create($imageData);
+            $createdImages[] = $createdImage;
+        }
+
+        return $createdImages;
+    }
 }
 
 ?>

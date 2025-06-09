@@ -9,14 +9,22 @@ class FavoriteService extends BaseService {
         parent::__construct($dao);
     }
 
-    public function getFavoritesByUserId($id, $page = 1) {
+    public function getPaginatedFavorites($id, $page = 1) {
         if (!is_numeric($id) || $id <= 0) {
             throw new Exception("Invalid user ID.");
         }
 
         $page = is_numeric($page) && $page > 0 ? (int)$page : 1;
 
-        return $this->dao->getFavoritesByUserId((int)$id, $page);
+        return $this->dao->getPaginatedFavorites((int)$id, $page);
+    }
+
+    public function getFavoritesByUserId($userId) {
+        if (!is_numeric($userId) || $userId <= 0) {
+            throw new Exception("Invalid user ID.");
+        }
+
+        return $this->dao->getFavoritesByUserId($userId);
     }
 
     public function isFavorited($userId, $propertyId) {

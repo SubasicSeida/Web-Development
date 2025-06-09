@@ -1,5 +1,20 @@
 <?php
 
+Flight::route('GET /property/@id', function($id) {
+    try {
+        $property = Flight::propertyService()->getById($id);
+
+        if (!$property) {
+            Flight::json(['error' => 'Property not found.'], 404);
+        } else {
+            Flight::json($property);
+        }
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 500);
+    }
+});
+
+
 /**
  * @OA\Get(
  *     path="/properties/agent/{id}",
@@ -146,6 +161,8 @@ Flight::route('POST /property', function() {
     Flight::auth_middleware()->authorizeRole(Roles::AGENT);
 
     $data = Flight::request()->data->getData();
+    $user = Flight::get('user');
+    $data['agent_id'] = $user->id;
     try {
         Flight::json(Flight::propertyService()->create($data));
     } catch (Exception $e) {

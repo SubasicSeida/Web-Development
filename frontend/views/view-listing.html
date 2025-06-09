@@ -1,6 +1,6 @@
 <div class="container-fluid header bg-white p-0">
     <div class="row g-0 align-items-center flex-column-reverse flex-md-row px-5">
-        <div class="container my-5" style="margin-top: 10rem !important">
+        <!-- <div class="container my-5" style="margin-top: 10rem !important">
             <div class="row px-5">
                 <h2 class="mb-4">Golden Urban House For Sell</h2>
                 <div class="col-md-6">
@@ -36,18 +36,15 @@
                     </div>
 
                     <div class="d-flex gap-3 mt-3">
-                        <!-- for buying property -->
                         <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#buyModal"
                             style="display: none;">
                             <i class="fa fa-home me-2"></i> Buy This Property
                         </button>
 
-                        <!-- for renting property -->
                         <button class="btn btn-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#rentModal">
                             <i class="fa fa-calendar me-2"></i> Rent This Property
                         </button>
 
-                        <!-- for deleting listing (agent) -->
                         <button class="btn btn-secondary flex-grow-1" data-bs-toggle="modal"
                             data-bs-target="#deleteModal" style="display: none;">
                             <i class="far fa-trash-alt me-2"></i> Delete This Listing
@@ -86,10 +83,10 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- Reviews Section -->
-        <div class="row mt-5">
+        <!-- <div class="row mt-5">
             <div class="col px-3">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0">Reviews</h3>
@@ -161,11 +158,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Review Form -->
-    <div class="row mt-5 py-5">
+    <!-- <div class="row mt-5 py-5">
         <div class="col" style="padding-left: 7rem !important; padding-right: 7rem !important;">
             <h4>Leave a Review</h4>
             <form id="reviewForm">
@@ -184,7 +181,7 @@
                 <button type="submit" class="btn btn-primary">Submit Review</button>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Gallery Modal -->
     <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
@@ -391,3 +388,8 @@
 </div>
 <script src="./assets/js/flatpickr.js"></script>
 <!-- Footer End -->
+
+<script>
+    const id = window.location.hash.split('/')[1];
+    ViewPropertyService.init(id);
+</script>
