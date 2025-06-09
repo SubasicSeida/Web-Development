@@ -23,6 +23,14 @@ let PropertyService = {
             e.preventDefault();
             PropertyService.search();
         });
+
+        $(".sort-option").on("click", function () {
+            const sort = $(this).data("sort");
+            const order = $(this).data("order");
+            $("#search-form input[name='sort']").val(sort);
+            $("#search-form input[name='order']").val(order);
+            PropertyService.search();
+        });
     },
 
     getFiltersFromHash: function () {
