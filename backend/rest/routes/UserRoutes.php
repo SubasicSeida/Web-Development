@@ -309,3 +309,57 @@ Flight::route('DELETE /user/agent/@id', function($id) {
     }
 });
 
+
+/**
+ * @OA\Put(
+ *     path="/user/{id}",
+ *     summary="Update user profile information",
+ *     tags={"Users"},
+ *     security={{"ApiKey": {}}},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         @OA\Schema(type="integer"),
+ *         description="User ID"
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(
+ *                 type="object",
+ *                 @OA\Property(property="first_name", type="string", example="John"),
+ *                 @OA\Property(property="last_name", type="string", example="Doe"),
+ *                 @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
+ *                 @OA\Property(property="phone_number", type="string", example="+1234567890")
+ *             )
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="User profile successfully updated"
+ *     ),
+ *     @OA\Response(
+ *         response=400,
+ *         description="Invalid input data"
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Unauthorized"
+ *     )
+ * )
+ */
+
+
+Flight::route('PUT /user/@id', function($id) {
+    Flight::auth_middleware()->authorizeRoles([Roles::AGENT, Roles::CUSTOMER]);
+    
+    $data = Flight::request()->data->getData();
+    
+    try {
+        Flight::json(Flight::userService()->update($id, $data));
+    } catch (Exception $e) {
+        Flight::json(['error' => $e->getMessage()], 400);
+    }
+});

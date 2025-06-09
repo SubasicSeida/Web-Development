@@ -47,17 +47,24 @@ let PropertyService = {
             data: filters,
             success: (response) => {
                 //console.log("Search response:", response);
-                PropertyService.getUserFavorites(function (favorites) {
-                    PropertyService.renderProperties(response.data, favorites);
-                })
+                const token = localStorage.getItem("user_token");
+                const payload = Utils.parseJwt(token);
+                const role = payload?.user?.user_role;
 
+                if (role === Constants.CUSTOMER_ROLE) {
+                    PropertyService.getUserFavorites(function (favorites) {
+                        PropertyService.renderProperties(response.data, favorites);
+                    });
+                } else {
+                    PropertyService.renderProperties(response.data, []);
+                }
             },
             error: (xhr) => toastr.error(xhr?.responseJSON?.error || "Failed to load properties.")
         });
     },
 
-    renderProperties: function (properties, favorites = []) {
-        const container = $("#property-list");
+    renderProperties: function (properties, favorites = [], containerSelector = "#property-list") {
+        const container = $(containerSelector);
         container.empty();
 
         if (!properties || properties.length === 0) {
@@ -65,55 +72,66 @@ let PropertyService = {
             return;
         }
 
+        const token = localStorage.getItem("user_token");
+        const payload = Utils.parseJwt(token);
+        const role = payload?.user?.user_role;
+
+        const showFavorite = role === Constants.CUSTOMER_ROLE;
+
         properties.forEach(property => {
             const isFavorited = favorites.includes(property.id);
             const starIconClass = isFavorited ? "fas" : "far";
 
+            const starSection = showFavorite
+                ? `<small class="flex-fill text-center py-2">
+                        <a class="star-toggle" data-id="${property.id}">
+                            <i class="${starIconClass} fa-star text-warning ms-2"></i>
+                        </a>
+                </small>`
+                : "";
+
             const card = `
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="property-item rounded overflow-hidden">
-                            <div class="position-relative overflow-hidden">
-                                <a href=#view-listing?id=${property.id}"><img class="img-fluid" src="assets/img/property-1.jpg"
-                                        alt /></a>
-                                <div
-                                    class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
-                                    ${this.safeDisplay(property.listing_type)}
-                                </div>
-                                <div
-                                    class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
-                                    ${property.property_type}
-                                </div>
+                    <div class="property-item rounded overflow-hidden">
+                        <div class="position-relative overflow-hidden">
+                            <a href="#view-listing?id=${property.id}">
+                                <img class="img-fluid" src="assets/img/property-1.jpg" alt />
+                            </a>
+                            <div class="bg-primary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
+                                ${this.safeDisplay(property.listing_type)}
                             </div>
-                            <div class="p-4 pb-0">
-                                <h5 class="text-primary mb-3">$${property.price}</h5>
-                                <a class="d-block h5 mb-2" href="#view-listing?id=${property.id}">
-                                    ${property.title}
-                                </a>
-                                <p>
-                                    <i class="fa fa-map-marker-alt text-primary me-2"></i>
-                                    ${this.safeDisplay(property.address)}, ${this.safeDisplay(property.city)}
-                                </p>
-                            </div>
-                            <div class="d-flex border-top">
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-ruler-combined text-primary me-2"></i>
-                                        ${this.safeDisplay(property.sqft)}
-                                </small>
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-bed text-primary me-2"></i>
-                                        ${this.safeDisplay(property.bedrooms)}
-                                </small>
-                                <small class="flex-fill text-center border-end py-2"><i
-                                        class="fa fa-bath text-primary me-2"></i>
-                                        ${this.safeDisplay(property.bathrooms)}
-                                </small>
-                                <small class="flex-fill text-center py-2"><a class="star-toggle" data-id="${property.id}">
-                                    <i class="${starIconClass} fa-star text-warning ms-2"></i></a>
-                                </small>
+                            <div class="bg-white rounded-top text-primary position-absolute start-0 bottom-0 mx-4 pt-1 px-3">
+                                ${property.property_type}
                             </div>
                         </div>
+                        <div class="p-4 pb-0">
+                            <h5 class="text-primary mb-3">$${property.price}</h5>
+                            <a class="d-block h5 mb-2" href="#view-listing?id=${property.id}">
+                                ${property.title}
+                            </a>
+                            <p><i class="fa fa-map-marker-alt text-primary me-2"></i>
+                                ${this.safeDisplay(property.address)}, ${this.safeDisplay(property.city)}
+                            </p>
+                        </div>
+                        <div class="d-flex border-top">
+                            <small class="flex-fill text-center border-end py-2">
+                                <i class="fa fa-ruler-combined text-primary me-2"></i>
+                                ${this.safeDisplay(property.sqft)}
+                            </small>
+                            <small class="flex-fill text-center border-end py-2">
+                                <i class="fa fa-bed text-primary me-2"></i>
+                                ${this.safeDisplay(property.bedrooms)}
+                            </small>
+                            <small class="flex-fill text-center border-end py-2">
+                                <i class="fa fa-bath text-primary me-2"></i>
+                                ${this.safeDisplay(property.bathrooms)}
+                            </small>
+                            ${starSection}
+                        </div>
                     </div>
+                </div>
             `;
+
             container.append(card);
         });
     },
@@ -169,8 +187,12 @@ let PropertyService = {
     getUserFavorites: function (callback) {
         const token = localStorage.getItem("user_token");
         const payload = Utils.parseJwt(token);
-        const userId = payload?.user?.id;
+        const user = payload?.user;
+        if (!user || user.user_role !== Constants.CUSTOMER_ROLE) {
+            return callback([]);
+        }
 
+        const userId = user.id;
         if (!userId) return callback([]);
 
         RestClient.get(
@@ -185,5 +207,27 @@ let PropertyService = {
                 callback([])
             }
         );
+    },
+
+    getAgentProperties: function () {
+        const token = localStorage.getItem("user_token");
+        const payload = Utils.parseJwt(token);
+        const userId = payload?.user?.id;
+
+        if (!userId) {
+            toastr.error("User ID not found.");
+            return;
+        }
+
+        RestClient.get(
+            `properties/agent/${userId}`,
+            function (response) {
+                PropertyService.renderProperties(response.data || [], [], "#agent-listings");
+            },
+            function (xhr) {
+                toastr.error(xhr?.responseJSON?.error || "Failed to load agent listings.");
+            }
+        );
     }
+
 };
