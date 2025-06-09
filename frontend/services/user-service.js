@@ -404,21 +404,12 @@ let UserService = {
         const token = localStorage.getItem("user_token");
         const payload = Utils.parseJwt(token);
         const role = payload?.user?.user_role;
-        const userId = payload?.user?.id;
 
         if (role === Constants.CUSTOMER_ROLE) {
             $("#customerSection").removeClass("d-none");
             $("#agentSection").addClass("d-none");
 
-            RestClient.get(`favorites/user/${userId}`, function (response) {
-                const favoriteProperties = response.data || [];
-                const favoriteIds = favoriteProperties.map(p => p.id);
-
-                PropertyService.renderProperties(favoriteProperties, favoriteIds, "#customer-listings");
-            }, function (xhr) {
-                toastr.error(xhr?.responseJSON?.error || "Failed to load favorites.");
-            });
-
+            PropertyService.getFavoriteListings();
         } else if (role === Constants.AGENT_ROLE) {
             $("#agentSection").removeClass("d-none");
             $("#customerSection").addClass("d-none");
@@ -427,6 +418,7 @@ let UserService = {
         } else {
             $("#customerSection, #agentSection").addClass("d-none");
         }
-    },
+    }
+
 
 };

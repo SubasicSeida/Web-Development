@@ -38,8 +38,9 @@ let PropertyService = {
         return filters;
     },
 
-    search: function () {
+    search: function (page = 1) {
         const filters = this.getFiltersFromHash();
+        filters.page = page;
 
         $.ajax({
             url: Constants.PROJECT_BASE_URL + "properties/search",
@@ -58,6 +59,13 @@ let PropertyService = {
                 } else {
                     PropertyService.renderProperties(response.data, []);
                 }
+
+                PropertyService.renderPagination(
+                    "#property-pagination",
+                    page,
+                    response.pagination?.total_pages || 1,
+                    (p) => PropertyService.search(p)
+                );
             },
             error: (xhr) => toastr.error(xhr?.responseJSON?.error || "Failed to load properties.")
         });
@@ -209,25 +217,101 @@ let PropertyService = {
         );
     },
 
-    getAgentProperties: function () {
+    getAgentProperties: function (page = 1) {
         const token = localStorage.getItem("user_token");
         const payload = Utils.parseJwt(token);
         const userId = payload?.user?.id;
-
-        if (!userId) {
-            toastr.error("User ID not found.");
-            return;
-        }
+        if (!userId) return toastr.error("User ID not found.");
 
         RestClient.get(
-            `properties/agent/${userId}`,
+            `properties/agent/${userId}?page=${page}`,
             function (response) {
-                PropertyService.renderProperties(response.data || [], [], "#agent-listings");
+                const properties = response.data;
+                const totalPages = response.pagination?.total_pages || 1;
+
+                PropertyService.renderProperties(properties, [], "#agent-listings");
+                PropertyService.renderPagination(
+                    "#agent-pagination",
+                    page,
+                    totalPages,
+                    (p) => PropertyService.getAgentProperties(p)
+                );
+
             },
             function (xhr) {
                 toastr.error(xhr?.responseJSON?.error || "Failed to load agent listings.");
             }
         );
+    },
+
+    getFavoriteListings: function (page = 1) {
+        const token = localStorage.getItem("user_token");
+        const payload = Utils.parseJwt(token);
+        const userId = payload?.user?.id;
+        if (!userId) return;
+
+        RestClient.get(
+            `favorites/user/${userId}?page=${page}`,
+            function (response) {
+                const properties = response.data;
+                const totalPages = response.pagination?.total_pages || 1;
+
+                PropertyService.renderProperties(
+                    properties,
+                    properties.map(p => p.id),
+                    "#customer-listings"
+                );
+
+                PropertyService.renderPagination(
+                    "#customer-pagination",
+                    page,
+                    totalPages,
+                    (p) => PropertyService.getFavoriteListings(p)
+                );
+
+            },
+            function () {
+                toastr.error("Failed to load favorite listings.");
+            }
+        );
+    },
+
+    renderPagination: function (containerSelector, currentPage, totalPages, fetchFunction) {
+        const container = $(containerSelector);
+        container.empty();
+
+        const prevDisabled = currentPage === 1 ? "disabled" : "";
+        const nextDisabled = currentPage === totalPages ? "disabled" : "";
+
+        const prevBtn = `
+            <li class="page-item ${prevDisabled}">
+            <a class="page-link mx-1" href="#" data-page="${currentPage - 1}">Previous</a>
+            </li>`;
+        container.append(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const active = i === currentPage ? "active" : "";
+            const pageBtn = `
+            <li class="page-item ${active} mx-1">
+                <a class="btn btn-outline-primary page-link" href="#" data-page="${i}">${i}</a>
+            </li>`;
+            container.append(pageBtn);
+        }
+
+        const nextBtn = `
+            <li class="page-item ${nextDisabled}">
+            <a class="page-link mx-1" href="#" data-page="${currentPage + 1}">Next</a>
+            </li>`;
+        container.append(nextBtn);
+
+        container.find("a.page-link").on("click", (e) => {
+            e.preventDefault();
+            const page = parseInt($(e.currentTarget).data("page"));
+            if (page > 0 && page <= totalPages) {
+                fetchFunction.call(PropertyService, page);
+            }
+        });
+
     }
 
 };
